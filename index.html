@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>VK-IT Services</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:"Segoe UI",sans-serif}
+    body{
+      color:#fff;
+      background:
+        radial-gradient(900px 420px at 12% 10%, rgba(251,191,36,.18), transparent 60%),
+        radial-gradient(900px 420px at 88% 10%, rgba(59,130,246,.14), transparent 60%),
+        radial-gradient(900px 520px at 50% 100%, rgba(34,197,94,.10), transparent 60%),
+        linear-gradient(180deg,#020617 0%, #000 55%, #020617 100%);
+      overflow-x:hidden;
+    }
+
+    /* Animated background glow layer */
+    body:before{
+      content:"";
+      position:fixed; inset:-30%;
+      background:
+        conic-gradient(from 180deg at 50% 50%,
+          rgba(251,191,36,.10),
+          rgba(59,130,246,.10),
+          rgba(34,197,94,.10),
+          rgba(168,85,247,.10),
+          rgba(251,191,36,.10)
+        );
+      filter: blur(60px);
+      opacity:.55;
+      animation: aurora 14s linear infinite;
+      z-index:-2;
+    }
+    @keyframes aurora{
+      0%{transform:translate3d(-2%, -2%, 0) rotate(0deg)}
+      50%{transform:translate3d(2%, 2%, 0) rotate(180deg)}
+      100%{transform:translate3d(-2%, -2%, 0) rotate(360deg)}
+    }
+
+    header{
+      position:fixed;width:100%;padding:16px 60px;
+      background:rgba(2,6,23,.62);
+      border-bottom:1px solid rgba(255,255,255,.06);
+      backdrop-filter:blur(14px);
+      display:flex;justify-content:space-between;align-items:center;z-index:100
+    }
+    .logo{font-size:24px;font-weight:800;letter-spacing:.4px}
+    .logo span{color:#fbbf24;text-shadow:0 0 18px rgba(251,191,36,.22)}
+    nav a{color:#cbd5f5;margin-left:28px;text-decoration:none;font-weight:600;opacity:.9}
+    nav a:hover{color:#fbbf24;opacity:1}
+
+    /* HERO */
+    .hero{
+      height:100vh;display:flex;justify-content:center;align-items:center;
+      padding:110px 20px 30px;
+      position:relative;
+    }
+    .hero-box{
+      width:min(980px, 94vw);
+      background:rgba(17,24,39,.72);
+      border:1px solid rgba(255,255,255,.08);
+      padding:56px 46px;border-radius:26px;
+      box-shadow:0 0 90px rgba(251,191,36,.10), 0 0 60px rgba(59,130,246,.08);
+      text-align:center;
+      animation: float 7s ease-in-out infinite;
+      position:relative;
+      overflow:hidden;
+    }
+    .hero-box:before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:linear-gradient(135deg,
+        rgba(251,191,36,.22),
+        rgba(59,130,246,.18),
+        rgba(34,197,94,.14),
+        rgba(168,85,247,.16)
+      );
+      filter: blur(18px);
+      opacity:.55;
+      z-index:-1;
+    }
+    .hero h1{font-size:46px;margin-bottom:14px;line-height:1.15}
+    .hero p{color:#a8b3c7;margin-bottom:26px;font-size:16.5px}
+    .hero-badges{
+      display:flex;justify-content:center;gap:10px;flex-wrap:wrap;
+      margin:0 0 26px;
+    }
+    .badge{
+      padding:9px 12px;border-radius:999px;
+      background:rgba(2,6,23,.55);
+      border:1px solid rgba(255,255,255,.07);
+      color:#dbe3f7;font-weight:600;font-size:13px;
+    }
+
+    .btn{
+      padding:14px 36px;
+      background:linear-gradient(135deg,#f59e0b,#fbbf24);
+      color:#000;border-radius:12px;
+      text-decoration:none;font-weight:900;
+      display:inline-flex;align-items:center;gap:10px;
+      box-shadow:0 14px 35px rgba(251,191,36,.18);
+      transition:.25s;
+    }
+    .btn:hover{transform:translateY(-2px);box-shadow:0 20px 55px rgba(251,191,36,.22)}
+
+    /* SECTIONS */
+    .services{padding:92px 60px 50px;text-align:center}
+    .services h2{margin-bottom:14px;font-size:30px}
+    .services .sub{color:#9aa7bf;margin:0 auto 36px;max-width:880px}
+
+    .service-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+      gap:30px
+    }
+    .card{
+      background:rgba(17,24,39,.82);
+      padding:34px;border-radius:20px;
+      transition:.35s;
+      border:1px solid rgba(255,255,255,.08);
+      position:relative;
+      overflow:hidden;
+      text-align:left;
+      min-height:190px;
+    }
+    .card:before{
+      content:"";
+      position:absolute; inset:-1px;
+      background:linear-gradient(135deg,
+        rgba(251,191,36,.16),
+        rgba(59,130,246,.12),
+        rgba(168,85,247,.10),
+        rgba(34,197,94,.10)
+      );
+      opacity:.25;
+      z-index:-1;
+      filter: blur(10px);
+      transform:translateY(12px);
+      transition:.35s;
+    }
+    .card:hover{
+      transform:translateY(-10px) scale(1.02);
+      box-shadow:0 0 45px rgba(251,191,36,.18), 0 0 40px rgba(59,130,246,.10)
+    }
+    .card:hover:before{opacity:.5;transform:translateY(0)}
+    .card i{font-size:34px;color:#fbbf24;margin-bottom:14px}
+    .card h3{font-size:18.5px;margin-bottom:8px}
+    .card p{color:#a7b3ca;line-height:1.55}
+    .card .mini-actions{
+      margin-top:16px;
+      display:flex;gap:10px;flex-wrap:wrap;align-items:center;
+    }
+    .pill{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:9px 12px;border-radius:999px;
+      background:rgba(2,6,23,.55);
+      border:1px solid rgba(255,255,255,.08);
+      color:#e9eefc;text-decoration:none;font-weight:700;font-size:13px;
+      transition:.25s;
+    }
+    .pill:hover{transform:translateY(-2px);border-color:rgba(251,191,36,.35)}
+    .pill .fa-arrow-right{font-size:12px;color:#fbbf24}
+
+    /* GROUP (Accordion) */
+    .groups{padding:0 60px 80px}
+    .group{
+      margin:16px auto;
+      max-width:1200px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(2,6,23,.35);
+      overflow:hidden;
+    }
+    .group-btn{
+      width:100%;
+      background:transparent;
+      color:#fff;
+      border:none;
+      padding:18px 18px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      cursor:pointer;
+      font-weight:900;
+      letter-spacing:.2px;
+    }
+    .group-btn .left{
+      display:flex;align-items:center;gap:12px;
+      text-align:left;
+    }
+    .group-btn .left i{
+      color:#fbbf24;
+      width:28px;text-align:center;
+      font-size:18px;
+    }
+    .group-btn small{
+      display:block;
+      color:#9aa7bf;
+      font-weight:600;
+      margin-top:4px;
+    }
+    .chev{
+      transition:.25s;
+      color:#cbd5f5;
+      opacity:.9;
+    }
+    .group.open .chev{transform:rotate(180deg)}
+    .group-panel{
+      display:none;
+      padding:0 18px 18px;
+    }
+    .group.open .group-panel{display:block}
+    .group-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+      gap:18px;
+      margin-top:10px;
+    }
+
+    /* ABOUT */
+    .about{padding:80px 60px;text-align:center;color:#cbd5f5}
+    .about h2{font-size:28px;margin-bottom:12px}
+    .about p{max-width:900px;margin:0 auto;line-height:1.7;color:#a9b6ce}
+    .about-feats{
+      margin:26px auto 0;
+      max-width:1000px;
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:14px;
+      text-align:left;
+    }
+    .feat{
+      padding:16px 16px;border-radius:16px;
+      background:rgba(17,24,39,.62);
+      border:1px solid rgba(255,255,255,.07);
+    }
+    .feat b{color:#fbbf24}
+    .feat span{display:block;color:#a9b6ce;margin-top:6px;line-height:1.55}
+
+    /* CONTACT */
+    .contact{padding:90px 60px;background:linear-gradient(135deg,#020617,#111827);text-align:center}
+    .contact-info p{margin:8px 0;color:#e5e7eb}
+    form{max-width:420px;margin:30px auto 0}
+    form input,form select,form textarea{
+      width:100%;padding:14px;margin-bottom:15px;border-radius:10px;border:none;
+      background:#020617;color:#fff;
+      outline:1px solid rgba(255,255,255,.08);
+      transition:.2s;
+    }
+    form input:focus,form select:focus,form textarea:focus{outline:1px solid rgba(251,191,36,.45)}
+    form button{
+      width:100%;padding:14px;
+      background:linear-gradient(135deg,#f59e0b,#fbbf24);
+      border:none;font-weight:900;border-radius:10px;cursor:pointer;
+      box-shadow:0 16px 40px rgba(251,191,36,.14);
+      transition:.25s;
+    }
+    form button:hover{transform:translateY(-2px);box-shadow:0 22px 60px rgba(251,191,36,.18)}
+
+    footer{text-align:center;padding:18px;background:#020617;color:#94a3b8;border-top:1px solid rgba(255,255,255,.06)}
+
+    /* Floating contact buttons */
+    .float-stack{
+      position:fixed;
+      right:22px;
+      bottom:22px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      z-index:120;
+    }
+    .fab-btn{
+      width:52px;height:52px;
+      display:flex;align-items:center;justify-content:center;
+      border-radius:50%;
+      color:#fff;
+      text-decoration:none;
+      box-shadow:0 0 22px rgba(0,0,0,.55);
+      border:1px solid rgba(255,255,255,.10);
+      position:relative;
+      overflow:hidden;
+      animation:pulse 2.2s infinite;
+    }
+    .fab-btn i{font-size:24px}
+    .fab-btn:after{
+      content:"";
+      position:absolute;inset:-40%;
+      background:radial-gradient(circle, rgba(255,255,255,.35), transparent 60%);
+      transform:translateY(35%);
+      opacity:.22;
+    }
+    .whatsapp{background:#25d366}
+    .telegram{background:linear-gradient(135deg,#1d9bf0,#0ea5e9)}
+    .gmail{background:linear-gradient(135deg,#ef4444,#f97316)}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+    @keyframes pulse{
+      0%{box-shadow:0 0 0 0 rgba(251,191,36,.0), 0 0 22px rgba(0,0,0,.55)}
+      70%{box-shadow:0 0 0 18px rgba(251,191,36,.0), 0 0 22px rgba(0,0,0,.55)}
+      100%{box-shadow:0 0 0 0 rgba(251,191,36,.0), 0 0 22px rgba(0,0,0,.55)}
+    }
+
+    /* Responsive */
+    @media (max-width: 820px){
+      header{padding:14px 18px}
+      nav a{margin-left:14px}
+      .services,.about,.contact,.groups{padding-left:18px;padding-right:18px}
+      .hero h1{font-size:36px}
+      .hero-box{padding:42px 20px}
+    }
+  </style>
+</head>
+<body>
+
+<!-- Floating Contact Stack -->
+<div class="float-stack">
+  <a href="https://wa.me/919047400147" class="fab-btn whatsapp" target="_blank" rel="noopener" aria-label="WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+  <a href="https://t.me/" class="fab-btn telegram" target="_blank" rel="noopener" aria-label="Telegram">
+    <i class="fab fa-telegram"></i>
+  </a>
+  <a href="mailto:Vinothvks777@gmail.com" class="fab-btn gmail" target="_blank" rel="noopener" aria-label="Gmail">
+    <i class="fa-solid fa-envelope"></i>
+  </a>
+</div>
+
+<header>
+  <div class="logo">VK-<span>IT</span> Services</div>
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#services">Services</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<section class="hero" id="home">
+  <div class="hero-box">
+    <h1>Next-Gen IT Solutions<br>for Growing Businesses</h1>
+    <p>Secure • Scalable • Professional IT Services</p>
+
+    <div class="hero-badges">
+      <div class="badge"><i class="fa-solid fa-shield-halved"></i> Security-first</div>
+      <div class="badge"><i class="fa-solid fa-bolt"></i> Fast support</div>
+      <div class="badge"><i class="fa-solid fa-cloud"></i> Cloud-ready</div>
+      <div class="badge"><i class="fa-solid fa-screwdriver-wrench"></i> On-site & remote</div>
+    </div>
+
+    <a href="#contact" class="btn"><i class="fa-solid fa-paper-plane"></i> Request Service</a>
+  </div>
+</section>
+
+<section class="services" id="services">
+  <h2>Our Core Services</h2>
+  <p class="sub">More services are grouped below (Windows, Linux, Android, MS Office Keys). Click a group to expand and then click “Request Service”.</p>
+
+  <div class="service-grid">
+    <div class="card">
+      <i class="fa-solid fa-server"></i>
+      <h3>Website Hosting</h3>
+      <p>Fast, secure & reliable cloud hosting with basic hardening and uptime monitoring.</p>
+      <div class="mini-actions">
+        <a class="pill" href="#contact">Request Service <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+    </div>
+
+    <div class="card">
+      <i class="fa-solid fa-code"></i>
+      <h3>Website Designing</h3>
+      <p>Modern, responsive & SEO-friendly design with performance-focused layout.</p>
+      <div class="mini-actions">
+        <a class="pill" href="#contact">Request Service <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+    </div>
+
+    <div class="card">
+      <i class="fa-solid fa-shield-halved"></i>
+      <h3>Cyber Security</h3>
+      <p>Endpoint hardening, backups, best practices, and security checks for SMBs.</p>
+      <div class="mini-actions">
+        <a class="pill" href="#contact">Request Service <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+    </div>
+
+    <div class="card">
+      <i class="fa-solid fa-network-wired"></i>
+      <h3>IT Consulting</h3>
+      <p>IT planning, network architecture guidance, and cost-optimized solutions.</p>
+      <div class="mini-actions">
+        <a class="pill" href="#contact">Request Service <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Service Groups (Click to expand) -->
+<section class="groups">
+  <div class="group open" data-group>
+    <button class="group-btn" type="button" data-toggle>
+      <span class="left">
+        <i class="fa-brands fa-windows"></i>
+        <span>
+          Windows / Server / Desktop Services
+          <small>Installation • Troubleshooting • Performance • Networking</small>
+        </span>
+      </span>
+      <i class="fa-solid fa-chevron-down chev"></i>
+    </button>
+
+    <div class="group-panel">
+      <div class="group-grid">
+        <div class="card">
+          <i class="fa-solid fa-computer"></i>
+          <h3>Desktop Service & Repair</h3>
+          <p>System health check, slow PC fix, driver issues, overheating, upgrade guidance.</p>
+          <div class="mini-actions">
+            <a class="pill" href="#contact">Request Service <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+        </div>
+
+        <div class="card">
+          <i class="fa-solid fa-microchip"></i>
+          <h3>OS Installation (Windows)</h3>
+          <p>Windows install, partitioning, drivers, updates, and essential software setup.</p>
+          <div class="mini-actions">
+            <a class="pill" href="#contact">Request Service <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+        </div>
+
+        <div class="card">
+          <i class="fa-solid fa-server"></i>
+          <h3>Windows Server Support</h3>
+          <p>Basic server setup, roles support, patching, monitoring, and stability checks.</p>
+          <div class="mini-actions">
+            <a class="pill" href="#contact">Request Service <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+        </div>
+
+        <div class="card">
+          <i class="fa-solid fa-wifi"></i>
+          <h3>Network Setup</h3>
+          <p>Router/switch setup, Wi‑Fi tuning, LAN troubleshooting, printer & sharing.</p>
+          <div class="mini-actions">
+            <a class="pill" href="#contact">Request Service <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="group" data-group>
+    <button class="group-btn" type="button" data-toggle>
+      <span class="left">
+        <i class="fa-brands fa-linux"></i>
+        <span>
+          Linux Services
+          <small>Install • Server services • SSH • Security basics</small>
+        </span>
+      </span>
+      <i class="fa-solid fa-chevron-down chev"></i>
+    </button>
+
+    <div class="group-panel">
+      <div class="group-grid">
+        <div class="card">
+          <i class="fa-solid fa-download"></i>
+          <h3>Linux OS Installation</h3>
+          <p>Ubuntu/CentOS-based installation, dual boot, disk layout, updates.</p>
+          <div class="mini-actions">
+            <a class="pill" href="#contact">Request Service <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+        </div>
+
+        <div class="card">
+          <i class="fa-solid fa-terminal"></i>
+          <h3>Linux Troubleshooting</h3>
+          <p>Boot issues, package issues, storage cleanup, performance tuning.</p>
+          <div class="mini-actions">
+            <a class="pill" href="#contact">Request Service <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+        </div>
+
+        <div class="card">
+          <i class="fa-solid fa-lock"></i>
+          <h3>Linux Hardening (Basic)</h3>
+          <p>SSH security basics, firewall rules, user access review, update policy.</p>
+          <div class="mini-actions">
+            <a class="pill" href="#contact">Request Service <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+        </div>
+
+        <div class="card">
+          <i class="fa-solid fa-globe"></i>
+          <h3>Web Server Setup</h3>
+          <p>Basic Apache/Nginx setup, domain mapping, TLS support guidance.</p>
+          <div class="mini-actions">
+            <a class="pill" href="#contact">Request Service <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="group" data-group>
+    <button class="group-btn" type="button" data-toggle>
+      <span class="left">
+        <i class="fa-brands fa-android"></i>
+        <span>
+          Android Services
+          <small>Setup • Recovery • Performance • Business apps</small>
+        </span>
+      </span>
+      <i class="fa-solid fa-chevron-down chev"></i>
+    </button>
+
+    <div class="group-panel">
+      <div class="group-grid">
+        <div class="card">
+          <i class="fa-solid fa-mobile-screen-button"></i>
+          <h3>Android Setup & Optimization</h3>
+          <p>New phone setup, backups, Google account security, storage cleanup.</p>
+          <div class="mini-actions">
+            <a class="pill" href="#contact">Request Service <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+        </div>
+
+        <div class="card">
+          <i class="fa-solid fa-cloud-arrow-up"></i>
+          <h3>Data Backup & Restore</h3>
+          <p>Photos/contacts backup, WhatsApp restore guidance, cloud sync setup.</p>
+          <div class="mini-actions">
+            <a class="pill" href="#contact">Request Service <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+        </div>
+
+        <div class="card">
+          <i class="fa-solid fa-shield"></i>
+          <h3>Mobile Security Check</h3>
+          <p>App permission review, suspicious apps cleanup, safe browsing guidance.</p>
+          <div class="mini-actions">
+            <a class="pill" href="#contact">Request Service <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+        </div>
+
+        <div class="card">
+          <i class="fa-solid fa-qrcode"></i>
+          <h3>Business Apps Setup</h3>
+          <p>Authenticator apps, email setup, Teams/Zoom/Drive and device policies basics.</p>
+          <div class="mini-actions">
+            <a class="pill" href="#contact">Request Service <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="group" data-group>
+    <button class="group-btn" type="button" data-toggle>
+      <span class="left">
+        <i class="fa-solid fa-key"></i>
+        <span>
+          MS Office Key Services
+          <small>Installation • Activation guidance • License support</small>
+        </span>
+      </span>
+      <i class="fa-solid fa-chevron-down chev"></i>
+    </button>
+
+    <div class="group-panel">
+      <div class="group-grid">
+        <div class="card">
+          <i class="fa-solid fa-file-word"></i>
+          <h3>MS Office Installation</h3>
+          <p>Office setup, cleanup old versions, sign-in setup, update configuration.</p>
+          <div class="mini-actions">
+            <a class="pill" href="#contact">Request Service <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+        </div>
+
+        <div class="card">
+          <i class="fa-solid fa-key"></i>
+          <h3>Activation Support</h3>
+          <p>Activation troubleshooting, account/license mapping guidance and fixes.</p>
+          <div class="mini-actions">
+            <a class="pill" href="#contact">Request Service <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+        </div>
+
+        <div class="card">
+          <i class="fa-solid fa-circle-check"></i>
+          <h3>Genuine License Assistance</h3>
+          <p>Guidance to choose the right plan and ensure genuine licensing for business.</p>
+          <div class="mini-actions">
+            <a class="pill" href="#contact">Request Service <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+        </div>
+
+        <div class="card">
+          <i class="fa-solid fa-life-ring"></i>
+          <h3>Office Troubleshooting</h3>
+          <p>Outlook profile issues, crashes, add-ins, slow startup and repair.</p>
+          <div class="mini-actions">
+            <a class="pill" href="#contact">Request Service <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="about" id="about">
+  <h2>Why VK-IT Services?</h2>
+  <p>We provide secure, scalable and future-ready IT solutions tailored for businesses of all sizes, including server/desktop support, OS installation, Linux support, and productivity setup.</p>
+
+  <div class="about-feats">
+    <div class="feat"><b>Professional workflow</b><span>Clear requirements, transparent status updates, and stable delivery.</span></div>
+    <div class="feat"><b>Security mindset</b><span>Best practices for access, backups, and device hardening.</span></div>
+    <div class="feat"><b>Fast turnaround</b><span>Remote support options and prioritized issue resolution.</span></div>
+    <div class="feat"><b>Business-ready</b><span>Services designed for uptime, continuity, and growth.</span></div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <h2>Contact Us</h2>
+  <div class="contact-info">
+    <p><i class="fa-solid fa-phone"></i> 9047400147</p>
+    <p><i class="fa-solid fa-envelope"></i> Vinothvks777@gmail.com</p>
+  </div>
+
+  <form
+    action="https://script.google.com/macros/s/AKfycbx6-Tq6S8z13cQv-jkXe6dj_3CrSQ138wcc4oSFzUPesstSmmztzc4T2vD4YLAHhmPBig/exec"
+    method="POST"
+  >
+    <input name="name" type="text" placeholder="Your Name" required>
+    <input name="email" type="email" placeholder="Email Address" required>
+    <select name="service" required>
+      <option value="">Select Service</option>
+      <option>Website Hosting</option>
+      <option>Website Designing</option>
+      <option>Cyber Security</option>
+      <option>IT Consulting</option>
+    </select>
+    <textarea name="message" placeholder="Describe your requirement" required></textarea>
+    <button type="submit">Submit Request</button>
+  </form>
+</section>
+
+<footer>© 2025 VK-IT Services • All Rights Reserved</footer>
+
+<script>
+  // Simple accordion toggle for service groups
+  document.querySelectorAll("[data-toggle]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const group = btn.closest("[data-group]");
+      group.classList.toggle("open");
+    });
+  });
+
+  // Optional: when clicking "Request Service" inside a card, auto-scroll to contact
+  document.querySelectorAll('a[href="#contact"]').forEach(a=>{
+    a.addEventListener("click", (e)=>{
+      // Let default anchor behavior work; smooth scroll enhancement:
+      const el = document.querySelector("#contact");
+      if(el){
+        e.preventDefault();
+        el.scrollIntoView({behavior:"smooth", block:"start"});
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
