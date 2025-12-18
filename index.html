@@ -4,14 +4,14 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Christmas Gift Share</title>
+
   <style>
     :root{
-      --bg1:#061a3a; --bg2:#0b3a2f;
       --glass: rgba(255,255,255,.10);
       --stroke: rgba(255,255,255,.16);
       --txt: rgba(255,255,255,.92);
       --muted: rgba(255,255,255,.72);
-      --gold:#ffd54a; --red:#ff4d4d; --green:#69f0ae; --cyan:#40c4ff; --vio:#b388ff;
+      --gold:#ffd54a; --cyan:#40c4ff; --vio:#b388ff; --green:#69f0ae;
     }
     *{box-sizing:border-box}
     html,body{height:100%}
@@ -20,41 +20,28 @@
       overflow:hidden;
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
       color:var(--txt);
+
+      /* ONLINE CHRISTMAS BACKGROUND IMAGE */
+      /* Tip: Replace the URL with any image you like (must be direct image link). */
       background:
-        radial-gradient(1100px 700px at 15% 20%, rgba(64,196,255,.26), transparent 62%),
-        radial-gradient(900px 650px at 80% 30%, rgba(105,240,174,.22), transparent 60%),
-        radial-gradient(800px 520px at 40% 80%, rgba(179,136,255,.18), transparent 60%),
-        linear-gradient(135deg,var(--bg1),var(--bg2));
+        linear-gradient(135deg, rgba(2,8,22,.82), rgba(4,24,18,.78)),
+        url("https://images.unsplash.com/photo-1543589077-47d81606c1bf?auto=format&fit=crop&w=1920&q=80")
+        center/cover no-repeat fixed;
     }
 
-    /* FX layers */
-    canvas#fx{
-      position:fixed; inset:0; width:100%; height:100%;
-      z-index:0; display:block;
-    }
-    .snow{
-      position:fixed; inset:0; z-index:1; pointer-events:none;
-      opacity:0; transition:opacity .6s ease;
-    }
+    canvas#fx{position:fixed; inset:0; width:100%; height:100%; z-index:0; display:block;}
+
+    .snow{position:fixed; inset:0; z-index:1; pointer-events:none; opacity:0; transition:opacity .6s ease;}
     .snow.on{opacity:1;}
     .flake{
-      position:absolute; top:-12vh;
-      width:6px;height:6px;border-radius:50%;
+      position:absolute; top:-12vh; width:6px; height:6px; border-radius:50%;
       background:rgba(255,255,255,.85);
       filter:drop-shadow(0 0 6px rgba(255,255,255,.25));
       animation: fall linear infinite;
     }
     @keyframes fall { to{ transform: translateY(120vh) translateX(var(--drift)); } }
 
-    .wrap{
-      position:relative;
-      z-index:2;
-      width:min(720px,92vw);
-      margin-inline:auto;
-      padding:26px 14px 18px;
-      text-align:center;
-    }
-
+    .wrap{position:relative; z-index:2; width:min(720px,92vw); margin-inline:auto; padding:26px 14px 18px; text-align:center;}
     .card{
       background:linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.06));
       border:1px solid var(--stroke);
@@ -63,178 +50,74 @@
       box-shadow: 0 22px 70px rgba(0,0,0,.35);
       backdrop-filter: blur(10px);
     }
-
-    .topline{
-      display:flex; align-items:center; justify-content:space-between;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-bottom:12px;
-    }
-    .brand{
-      font-weight:700;
-      letter-spacing:.5px;
-      text-align:left;
-    }
+    .topline{display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:12px;}
+    .brand{font-weight:800; letter-spacing:.5px; text-align:left;}
     .brand span{
       background:linear-gradient(90deg, var(--gold), var(--cyan), var(--vio), var(--green));
-      -webkit-background-clip:text;
-      background-clip:text;
-      color:transparent;
-      text-shadow: 0 0 22px rgba(255,213,74,.14);
+      -webkit-background-clip:text; background-clip:text; color:transparent;
     }
-
-    .stats{
-      display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;
-    }
+    .stats{display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;}
     .pill{
       display:flex; align-items:center; gap:8px;
-      padding:9px 12px;
-      border-radius:999px;
+      padding:9px 12px; border-radius:999px;
       border:1px solid rgba(255,255,255,.16);
-      background:rgba(0,0,0,.18);
-      font-size:13px;
-      color:var(--muted);
+      background:rgba(0,0,0,.22);
+      font-size:13px; color:var(--muted);
     }
-    .pill b{ color:#fff; font-weight:700; }
+    .pill b{color:#fff}
 
-    .gift-area{ display:flex; justify-content:center; margin:14px 0 8px; }
+    .gift-area{display:flex; justify-content:center; margin:14px 0 8px;}
 
-    /* Gift box */
-    .gift{
-      position:relative;
-      width:240px; height:210px;
-      cursor:pointer; user-select:none;
-      transform: translateZ(0);
-    }
+    .gift{position:relative; width:240px; height:210px; cursor:pointer; user-select:none;}
     .box{
-      position:absolute; left:0; right:0; bottom:0;
-      height:148px;
+      position:absolute; left:0; right:0; bottom:0; height:148px;
       background:linear-gradient(180deg,#ff6b6b,#c62828);
-      border-radius:16px;
-      box-shadow:0 22px 60px rgba(0,0,0,.35);
-      overflow:hidden;
+      border-radius:16px; box-shadow:0 22px 60px rgba(0,0,0,.35); overflow:hidden;
     }
-    .box:before{
-      content:""; position:absolute; left:50%; top:0;
-      transform:translateX(-50%);
-      width:36px; height:100%;
-      background:linear-gradient(180deg,#fff176,#ffeb3b);
-      opacity:.95;
-    }
-    .box:after{
-      content:""; position:absolute; left:0; top:58px;
-      width:100%; height:28px;
-      background:linear-gradient(180deg,#fff176,#ffeb3b);
-      opacity:.95;
-    }
+    .box:before{content:""; position:absolute; left:50%; top:0; transform:translateX(-50%); width:36px; height:100%;
+      background:linear-gradient(180deg,#fff176,#ffeb3b); opacity:.95;}
+    .box:after{content:""; position:absolute; left:0; top:58px; width:100%; height:28px;
+      background:linear-gradient(180deg,#fff176,#ffeb3b); opacity:.95;}
     .lid{
-      position:absolute; left:-7px; right:-7px; bottom:135px;
-      height:58px;
+      position:absolute; left:-7px; right:-7px; bottom:135px; height:58px;
       background:linear-gradient(180deg,#ff8a80,#b71c1c);
-      border-radius:18px;
-      transform-origin: 50% 100%;
+      border-radius:18px; transform-origin: 50% 100%;
       box-shadow:0 14px 26px rgba(0,0,0,.25);
       transition: transform .85s cubic-bezier(.2,.9,.2,1);
     }
-    .lid:before{
-      content:""; position:absolute; left:50%; top:0;
-      transform:translateX(-50%);
-      width:38px; height:100%;
-      background:linear-gradient(180deg,#fff176,#ffeb3b);
-    }
-    .bow{
-      position:absolute; left:50%; bottom:170px;
-      transform:translateX(-50%);
-      width:132px; height:74px;
-      transition: transform .85s cubic-bezier(.2,.9,.2,1);
-    }
+    .lid:before{content:""; position:absolute; left:50%; top:0; transform:translateX(-50%); width:38px; height:100%;
+      background:linear-gradient(180deg,#fff176,#ffeb3b);}
+    .bow{position:absolute; left:50%; bottom:170px; transform:translateX(-50%); width:132px; height:74px;
+      transition: transform .85s cubic-bezier(.2,.9,.2,1);}
     .bow:before,.bow:after{
-      content:""; position:absolute; top:20px;
-      width:60px; height:36px;
-      border:9px solid rgba(255,235,59,.95);
-      border-radius:42px 42px 22px 22px;
+      content:""; position:absolute; top:20px; width:60px; height:36px;
+      border:9px solid rgba(255,235,59,.95); border-radius:42px 42px 22px 22px;
       background:rgba(255,235,59,.24);
     }
-    .bow:before{ left:6px; transform:rotate(-14deg); }
-    .bow:after{ right:6px; transform:rotate(14deg); }
-    .knot{
-      position:absolute; left:50%; top:26px;
-      transform:translateX(-50%);
-      width:18px; height:18px;
-      border-radius:6px;
-      background:rgba(255,235,59,.95);
-      box-shadow:0 0 14px rgba(255,235,59,.25);
-    }
+    .bow:before{left:6px; transform:rotate(-14deg);}
+    .bow:after{right:6px; transform:rotate(14deg);}
+    .knot{position:absolute; left:50%; top:26px; transform:translateX(-50%); width:18px; height:18px; border-radius:6px;
+      background:rgba(255,235,59,.95); box-shadow:0 0 14px rgba(255,235,59,.25);}
 
-    .gift.open .lid{ transform: rotateX(78deg) translateY(-18px); }
-    .gift.open .bow{ transform: translateX(-50%) translateY(-16px) scale(.96); }
+    .gift.open .lid{transform: rotateX(78deg) translateY(-18px);}
+    .gift.open .bow{transform: translateX(-50%) translateY(-16px) scale(.96);}
 
-    /* Sparkles */
-    .sparkle{
-      position:absolute;
-      left:50%; bottom:182px;
-      width:10px;height:10px;border-radius:50%;
-      background:radial-gradient(circle, #fff 0%, rgba(255,255,255,0) 65%);
-      opacity:0;
-      filter: blur(.3px);
-      animation: sparkle 1.4s ease-in-out infinite;
-      transform: translateX(calc(-50% + var(--x))) translateY(var(--y));
-    }
-    @keyframes sparkle{
-      0%,100%{opacity:0; transform:translateX(calc(-50% + var(--x))) translateY(var(--y)) scale(.6)}
-      50%{opacity:1; transform:translateX(calc(-50% + var(--x))) translateY(calc(var(--y) - 18px)) scale(1.25)}
-    }
-    .gift:not(.open) .sparkle{display:none;}
+    .msg{margin-top:14px; opacity:0; transform: translateY(10px); transition: opacity .85s ease, transform .85s ease;}
+    .msg.show{opacity:1; transform: translateY(0);}
+    .msg h1{margin:0; font-size:clamp(28px,4vw,44px); line-height:1.1; text-shadow:0 12px 36px rgba(0,0,0,.35);}
+    .msg .sub{margin:10px 0 0; font-size:clamp(16px,2.3vw,20px); color:rgba(255,255,255,.92);}
+    .msg .by{margin:16px 0 0; font-size:13px; color:rgba(255,255,255,.78); letter-spacing:.7px;}
 
-    /* Message */
-    .msg{
-      margin-top:14px;
-      opacity:0;
-      transform: translateY(10px);
-      transition: opacity .85s ease, transform .85s ease;
-    }
-    .msg.show{ opacity:1; transform: translateY(0); }
-    .msg h1{
-      margin:0;
-      font-size:clamp(28px,4vw,44px);
-      line-height:1.1;
-      text-shadow:0 12px 36px rgba(0,0,0,.35);
-    }
-    .msg .sub{
-      margin:10px 0 0;
-      font-size:clamp(16px,2.3vw,20px);
-      color:rgba(255,255,255,.92);
-    }
-    .msg .by{
-      margin:16px 0 0;
-      font-size:13px;
-      color:rgba(255,255,255,.78);
-      letter-spacing:.7px;
-    }
-
-    /* Buttons */
-    .actions{
-      display:flex;
-      gap:10px;
-      justify-content:center;
-      flex-wrap:wrap;
-      margin-top:14px;
-    }
+    .actions{display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:14px;}
     .btn{
-      border:0;
-      border-radius:14px;
-      padding:12px 14px;
-      min-width:148px;
-      cursor:pointer;
-      color:#0b1020;
-      font-weight:800;
-      letter-spacing:.3px;
-      background: linear-gradient(90deg, var(--gold), #fff59d);
+      border:0; border-radius:14px; padding:12px 14px; min-width:148px;
+      cursor:pointer; color:#0b1020; font-weight:900; letter-spacing:.3px;
+      background: linear-gradient(90deg, #ffd54a, #fff59d);
       box-shadow: 0 16px 40px rgba(255,213,74,.18);
       transition: transform .15s ease, filter .15s ease;
     }
-    .btn:hover{ transform: translateY(-1px); filter: brightness(1.02); }
-    .btn:active{ transform: translateY(1px) scale(.99); }
+    .btn:hover{transform: translateY(-1px); filter: brightness(1.02);}
+    .btn:active{transform: translateY(1px) scale(.99);}
     .btn.alt{
       color:rgba(255,255,255,.92);
       background: rgba(0,0,0,.25);
@@ -242,66 +125,21 @@
       box-shadow:none;
     }
 
-    .toast{
-      margin-top:12px;
-      font-size:13px;
-      color:rgba(255,255,255,.78);
-      min-height:18px;
-    }
-
-    /* Floating glow */
-    .glow{
-      position:fixed;
-      width:420px; height:420px;
-      left:50%; top:50%;
-      transform:translate(-50%,-50%);
-      background: radial-gradient(circle, rgba(255,213,74,.12), transparent 62%);
-      filter: blur(2px);
-      z-index:1;
-      pointer-events:none;
-      opacity:.9;
-      animation: breathe 4.4s ease-in-out infinite;
-    }
-    @keyframes breathe { 0%,100%{transform:translate(-50%,-50%) scale(.96)} 50%{transform:translate(-50%,-50%) scale(1.05)} }
-
-    /* Confetti */
-    .confetti{
-      position:fixed; inset:0;
-      pointer-events:none;
-      z-index:1;
-      opacity:0;
-      transition:opacity .35s ease;
-    }
-    .confetti.on{opacity:1;}
-    .conf{
-      position:absolute;
-      top:-10vh;
-      width:10px; height:14px;
-      background:var(--c);
-      border-radius:3px;
-      transform: rotate(var(--r));
-      animation: confFall linear infinite;
-      filter: drop-shadow(0 8px 10px rgba(0,0,0,.18));
-    }
-    @keyframes confFall{
-      to{ transform: translateY(120vh) translateX(var(--dx)) rotate(calc(var(--r) + 340deg)); }
-    }
+    .toast{margin-top:12px; font-size:13px; color:rgba(255,255,255,.80); min-height:18px;}
   </style>
 </head>
 
 <body>
   <canvas id="fx"></canvas>
-  <div class="glow"></div>
   <div class="snow" id="snow"></div>
-  <div class="confetti" id="confetti"></div>
 
   <div class="wrap">
     <div class="card">
       <div class="topline">
         <div class="brand">🎁 <span>Christmas Share Box</span></div>
         <div class="stats">
-          <div class="pill">Local Shares: <b id="localCount">0</b></div>
-          <div class="pill">Total Shares: <b id="totalCount">--</b></div>
+          <div class="pill">Shares: <b id="localCount">0</b></div>
+          <div class="pill">HTTPS: <b id="secure">--</b></div>
         </div>
       </div>
 
@@ -310,10 +148,6 @@
           <div class="lid"></div>
           <div class="bow"><div class="knot"></div></div>
           <div class="box"></div>
-          <span class="sparkle" style="--x:-58px;--y:-10px"></span>
-          <span class="sparkle" style="--x:-22px;--y:-30px; animation-delay:.15s"></span>
-          <span class="sparkle" style="--x:14px;--y:-18px; animation-delay:.25s"></span>
-          <span class="sparkle" style="--x:52px;--y:-34px; animation-delay:.35s"></span>
         </div>
       </div>
 
@@ -326,7 +160,6 @@
       <div class="actions">
         <button class="btn" id="shareBtn">Share Now</button>
         <button class="btn alt" id="burstBtn">More Fireworks</button>
-        <button class="btn alt" id="resetBtn">Reset</button>
       </div>
 
       <div class="toast" id="toast"></div>
@@ -334,304 +167,155 @@
   </div>
 
 <script>
-/* =========================
-   CONFIG (optional backend)
-   =========================
-   If you have a backend endpoint that returns JSON:
-   GET  /share-count -> { total: 123 }
-   POST /share-count -> { total: 124 }
-   then set API_BASE to your URL (or keep empty for local only).
-*/
-const API_BASE = ""; // example: "https://your-domain.com/api"
+  // Secure context indicator (Web Share often needs HTTPS). [MDN]
+  const secure = (window.isSecureContext === true);
+  document.getElementById("secure").textContent = secure ? "YES" : "NO";
 
-/* =========================
-   Helpers
-   ========================= */
-const $ = (id)=>document.getElementById(id);
-const toast = (t)=>{ $("toast").textContent = t || ""; };
+  const toast = (t)=>{ document.getElementById("toast").textContent = t || ""; };
 
-function rand(min,max){ return Math.random()*(max-min)+min; }
-function pick(arr){ return arr[(Math.random()*arr.length)|0]; }
-
-/* =========================
-   Snow + Confetti DOM FX
-   ========================= */
-const snow = $("snow");
-function buildSnow(count=50){
-  snow.innerHTML = "";
-  for(let i=0;i<count;i++){
-    const f = document.createElement("div");
-    f.className="flake";
-    const size = rand(3,8);
-    f.style.width = size+"px";
-    f.style.height = size+"px";
-    f.style.left = rand(0,100)+"vw";
-    f.style.opacity = (rand(0.25,0.85)).toFixed(2);
-    f.style.setProperty("--drift", rand(-45,45)+"px");
-    const dur = rand(6,13);
-    f.style.animationDuration = dur+"s";
-    f.style.animationDelay = (-Math.random()*dur)+"s";
-    snow.appendChild(f);
+  /* Snow */
+  const snow = document.getElementById("snow");
+  function rand(min,max){ return Math.random()*(max-min)+min; }
+  function buildSnow(count=50){
+    snow.innerHTML="";
+    for(let i=0;i<count;i++){
+      const f=document.createElement("div");
+      f.className="flake";
+      const size=rand(3,8);
+      f.style.width=size+"px";
+      f.style.height=size+"px";
+      f.style.left=rand(0,100)+"vw";
+      f.style.opacity=(rand(0.25,0.85)).toFixed(2);
+      f.style.setProperty("--drift", rand(-45,45)+"px");
+      const dur=rand(6,13);
+      f.style.animationDuration=dur+"s";
+      f.style.animationDelay=(-Math.random()*dur)+"s";
+      snow.appendChild(f);
+    }
   }
-}
-buildSnow();
+  buildSnow();
 
-const confetti = $("confetti");
-const confColors = ["#ffd54a","#ff5252","#69f0ae","#40c4ff","#b388ff","#ffffff"];
-function burstConfetti(count=80){
-  confetti.innerHTML = "";
-  for(let i=0;i<count;i++){
-    const c = document.createElement("div");
-    c.className="conf";
-    c.style.left = rand(0,100)+"vw";
-    c.style.setProperty("--dx", rand(-90,90)+"px");
-    c.style.setProperty("--r", rand(0,180)+"deg");
-    c.style.setProperty("--c", pick(confColors));
-    c.style.animationDuration = rand(4.8,8.5)+"s";
-    c.style.animationDelay = (-Math.random()*2.2)+"s";
-    confetti.appendChild(c);
+  /* Fireworks canvas */
+  const canvas = document.getElementById("fx");
+  const ctx = canvas.getContext("2d",{alpha:true});
+  function resize(){
+    const dpr=Math.max(1, devicePixelRatio||1);
+    canvas.width=Math.floor(innerWidth*dpr);
+    canvas.height=Math.floor(innerHeight*dpr);
+    canvas.style.width=innerWidth+"px";
+    canvas.style.height=innerHeight+"px";
+    ctx.setTransform(dpr,0,0,dpr,0,0);
   }
-  confetti.classList.add("on");
-  setTimeout(()=>confetti.classList.remove("on"), 2200);
-}
+  addEventListener("resize", resize); resize();
 
-/* =========================
-   Fireworks Canvas FX
-   (basic canvas particles)
-   ========================= */
-const canvas = $("fx");
-const ctx = canvas.getContext("2d", {alpha:true});
-function resize(){
-  const dpr = Math.max(1, window.devicePixelRatio||1);
-  canvas.width = Math.floor(innerWidth*dpr);
-  canvas.height = Math.floor(innerHeight*dpr);
-  canvas.style.width = innerWidth+"px";
-  canvas.style.height = innerHeight+"px";
-  ctx.setTransform(dpr,0,0,dpr,0,0);
-}
-addEventListener("resize", resize);
-resize();
+  let running=false;
+  let rockets=[], parts=[];
+  const palette=["#ff5252","#ffd54a","#69f0ae","#40c4ff","#b388ff","#ffffff"];
+  const pick = a => a[(Math.random()*a.length)|0];
 
-let running=false;
-let rockets=[], parts=[];
-const palette = ["#ff5252","#ffd54a","#69f0ae","#40c4ff","#b388ff","#ffffff"];
+  function launchRocket(x,yTarget){
+    rockets.push({x, y: innerHeight+20, vx: rand(-1.1,1.1), vy: rand(-12.8,-10.2), yTarget, c: pick(palette)});
+  }
+  function explode(x,y,c){
+    const count = (rand(80,130))|0;
+    for(let i=0;i<count;i++){
+      const a=Math.random()*Math.PI*2, sp=rand(2.2,7.8);
+      parts.push({x,y, vx:Math.cos(a)*sp, vy:Math.sin(a)*sp, g:0.06, fr:0.985, a:1, fade:rand(0.008,0.016), r:rand(1.0,2.2), c});
+    }
+  }
+  function loop(){
+    if(!running) return;
+    ctx.fillStyle="rgba(0,0,0,0.18)";
+    ctx.fillRect(0,0,innerWidth,innerHeight);
 
-function launchRocket(x, yTarget){
-  rockets.push({
-    x, y: innerHeight + 20,
-    vx: rand(-1.1, 1.1),
-    vy: rand(-12.8, -10.2),
-    yTarget,
-    color: pick(palette)
+    for(let i=rockets.length-1;i>=0;i--){
+      const r=rockets[i];
+      r.x+=r.vx; r.y+=r.vy; r.vy+=0.08;
+      ctx.beginPath(); ctx.fillStyle=r.c; ctx.arc(r.x,r.y,2.2,0,Math.PI*2); ctx.fill();
+      if(r.y<=r.yTarget || r.vy>=-2){ rockets.splice(i,1); explode(r.x,r.y,r.c); }
+    }
+    for(let i=parts.length-1;i>=0;i--){
+      const p=parts[i];
+      p.vx*=p.fr; p.vy*=p.fr; p.vy+=p.g;
+      p.x+=p.vx; p.y+=p.vy; p.a-=p.fade;
+      if(p.a<=0){ parts.splice(i,1); continue; }
+      ctx.globalAlpha=Math.max(0,p.a);
+      ctx.beginPath(); ctx.fillStyle=p.c; ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill();
+      ctx.globalAlpha=1;
+    }
+    requestAnimationFrame(loop);
+  }
+  function startFX(){ if(running) return; running=true; ctx.clearRect(0,0,innerWidth,innerHeight); requestAnimationFrame(loop); }
+  function burstAt(x,y,n=4){
+    startFX();
+    for(let i=0;i<n;i++) launchRocket(x+rand(-40,40), y+rand(-120,60));
+  }
+
+  /* Local count */
+  const KEY="vk_xmas_share_local";
+  const getCount=()=>Number(localStorage.getItem(KEY)||0);
+  const setCount=(n)=>{ localStorage.setItem(KEY,String(n)); document.getElementById("localCount").textContent=n; };
+  setCount(getCount());
+
+  /* Gift open */
+  const gift=document.getElementById("gift");
+  const msg=document.getElementById("msg");
+  let opened=false;
+
+  function openGift(){
+    if(opened) return;
+    opened=true;
+    gift.classList.add("open");
+    msg.classList.add("show");
+    snow.classList.add("on");
+    for(let i=0;i<6;i++){
+      setTimeout(()=>burstAt(rand(80, innerWidth-80), rand(80, innerHeight*0.55), 3), i*220);
+    }
+    toast("Opened! Now Share.");
+  }
+
+  gift.addEventListener("click", ()=> opened ? burstAt(innerWidth/2, innerHeight*0.35, 5) : openGift());
+  gift.addEventListener("keydown",(e)=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); gift.click(); }});
+
+  document.getElementById("burstBtn").addEventListener("click", ()=>{
+    if(!opened) openGift();
+    burstAt(rand(120, innerWidth-120), rand(80, innerHeight*0.55), 5);
   });
-}
-function explode(x,y,color){
-  const count = (rand(80,130))|0;
-  for(let i=0;i<count;i++){
-    const a = Math.random()*Math.PI*2;
-    const sp = rand(2.2, 7.8);
-    parts.push({
-      x,y,
-      vx: Math.cos(a)*sp,
-      vy: Math.sin(a)*sp,
-      g: 0.06,
-      fr: 0.985,
-      a: 1,
-      fade: rand(0.008, 0.016),
-      r: rand(1.0, 2.2),
-      color
-    });
-  }
-}
-function loop(){
-  if(!running) return;
 
-  ctx.fillStyle = "rgba(0,0,0,0.18)";
-  ctx.fillRect(0,0,innerWidth,innerHeight);
+  /* Share */
+  document.getElementById("shareBtn").addEventListener("click", async ()=>{
+    if(!opened) openGift();
 
-  for(let i=rockets.length-1;i>=0;i--){
-    const r = rockets[i];
-    r.x += r.vx;
-    r.y += r.vy;
-    r.vy += 0.08;
+    // Count share button clicks
+    setCount(getCount()+1);
 
-    ctx.beginPath();
-    ctx.fillStyle = r.color;
-    ctx.arc(r.x,r.y,2.2,0,Math.PI*2);
-    ctx.fill();
-
-    if(r.y <= r.yTarget || r.vy >= -2){
-      rockets.splice(i,1);
-      explode(r.x,r.y,r.color);
-    }
-  }
-
-  for(let i=parts.length-1;i>=0;i--){
-    const p = parts[i];
-    p.vx *= p.fr;
-    p.vy *= p.fr;
-    p.vy += p.g;
-    p.x += p.vx;
-    p.y += p.vy;
-    p.a -= p.fade;
-
-    if(p.a <= 0){ parts.splice(i,1); continue; }
-
-    ctx.globalAlpha = Math.max(0,p.a);
-    ctx.beginPath();
-    ctx.fillStyle = p.color;
-    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-    ctx.fill();
-    ctx.globalAlpha = 1;
-  }
-
-  requestAnimationFrame(loop);
-}
-function startFX(){
-  if(running) return;
-  running=true;
-  ctx.clearRect(0,0,innerWidth,innerHeight);
-  requestAnimationFrame(loop);
-}
-function burstAt(x,y,rocketsN=4){
-  startFX();
-  for(let i=0;i<rocketsN;i++){
-    launchRocket(x + rand(-40,40), y + rand(-120,60));
-  }
-}
-
-/* =========================
-   Share count (local + optional server)
-   ========================= */
-const LOCAL_KEY = "vk_xmas_share_local";
-
-function setLocalCount(n){
-  localStorage.setItem(LOCAL_KEY, String(n));
-  $("localCount").textContent = n;
-}
-function getLocalCount(){
-  return Number(localStorage.getItem(LOCAL_KEY) || 0);
-}
-setLocalCount(getLocalCount());
-
-async function refreshTotal(){
-  if(!API_BASE){ $("totalCount").textContent = "--"; return; }
-  try{
-    const r = await fetch(API_BASE + "/share-count", {method:"GET"});
-    const j = await r.json();
-    $("totalCount").textContent = (j && typeof j.total === "number") ? j.total : "--";
-  }catch{
-    $("totalCount").textContent = "--";
-  }
-}
-refreshTotal();
-
-async function incrementTotal(){
-  if(!API_BASE) return;
-  try{
-    const r = await fetch(API_BASE + "/share-count", {method:"POST"});
-    const j = await r.json();
-    $("totalCount").textContent = (j && typeof j.total === "number") ? j.total : "--";
-  }catch{
-    // ignore
-  }
-}
-
-/* =========================
-   UI logic
-   ========================= */
-const gift = $("gift");
-const msg = $("msg");
-
-let opened=false;
-
-function openGift(){
-  if(opened) return;
-  opened=true;
-  gift.classList.add("open");
-  msg.classList.add("show");
-  snow.classList.add("on");
-
-  burstConfetti(90);
-
-  // intro fireworks sequence
-  for(let i=0;i<7;i++){
-    setTimeout(()=>{
-      burstAt(rand(80, innerWidth-80), rand(80, innerHeight*0.55), 3);
-    }, i*220);
-  }
-  toast("Gift opened! Tap Share Now.");
-}
-
-gift.addEventListener("click", ()=>{
-  if(!opened) openGift();
-  else burstAt(innerWidth/2, innerHeight*0.35, 5);
-});
-gift.addEventListener("keydown", (e)=>{
-  if(e.key==="Enter" || e.key===" "){ e.preventDefault(); gift.click(); }
-});
-
-$("burstBtn").addEventListener("click", ()=>{
-  if(!opened) openGift();
-  burstAt(rand(120, innerWidth-120), rand(80, innerHeight*0.55), 5);
-  burstConfetti(60);
-});
-
-$("resetBtn").addEventListener("click", ()=>{
-  opened=false;
-  gift.classList.remove("open");
-  msg.classList.remove("show");
-  snow.classList.remove("on");
-  toast("Reset done. Click the gift again.");
-});
-
-/* =========================
-   Share button (Web Share API)
-   =========================
-   Note: navigator.share() returns a Promise and may reject if user cancels. [MDN]
-*/
-$("shareBtn").addEventListener("click", async ()=>{
-  if(!opened) openGift();
-
-  // Count share click (best-effort; not guaranteed "completed share" across all platforms)
-  const next = getLocalCount() + 1;
-  setLocalCount(next);
-  incrementTotal();
-
-  const shareData = {
-    title: "Merry Christmas",
-    text: "Merry Christmas & Happy New Year!
+    const shareData = {
+      title:"Merry Christmas",
+      text:"Merry Christmas & Happy New Year!
 Developed By Vinothkumar -Cyber",
-    url: location.href
-  };
+      url: location.href
+    };
 
-  if(navigator.share){
-    try{
-      await navigator.share(shareData); // Promise resolves (platform-dependent) or rejects on cancel. [MDN]
-      toast("Thanks for sharing!");
-      burstConfetti(100);
-      burstAt(innerWidth/2, innerHeight*0.30, 6);
-    }catch(err){
-      // User cancellation is common; keep it silent (or show message).
-      toast("Share canceled (no problem).");
+    // Web Share API (supported browsers + usually secure contexts). [MDN]
+    if(navigator.share){
+      try{
+        await navigator.share(shareData);
+        toast("Thanks for sharing!");
+        burstAt(innerWidth/2, innerHeight*0.30, 6);
+      }catch{
+        toast("Share canceled (OK).");
+      }
+      return;
     }
-  }else{
-    // Fallback
+
+    // Fallback: copy link
     try{
       await navigator.clipboard.writeText(location.href);
-      toast("Share not supported. Link copied to clipboard.");
+      toast("Share not supported. Link copied.");
     }catch{
-      toast("Share not supported. Copy this link: " + location.href);
+      toast("Share not supported. Copy link: " + location.href);
     }
-  }
-});
-
-/* Extra: click anywhere after open to fireworks */
-addEventListener("click", (e)=>{
-  if(!opened) return;
-  if(e.target.closest && e.target.closest(".card")) return; // avoid UI clicks
-  burstAt(e.clientX, e.clientY, 4);
-});
+  });
 </script>
 </body>
 </html>
