@@ -1,350 +1,274 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Christmas Gift Box Share</title>
-  <style>
-    :root{
-      --glass: rgba(255,255,255,.10);
-      --stroke: rgba(255,255,255,.18);
-      --txt: rgba(255,255,255,.92);
-      --muted: rgba(255,255,255,.72);
-      --gold:#ffd54a; --cyan:#40c4ff; --vio:#b388ff; --green:#69f0ae;
-      --red1:#ff6b6b; --red2:#b71c1c;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      overflow:hidden;
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-      color:var(--txt);
-      background:
-        linear-gradient(135deg, rgba(2,8,22,.82), rgba(4,24,18,.78)),
-        url("https://images.unsplash.com/photo-1543589077-47d81606c1bf?auto=format&fit=crop&w=1920&q=80")
-        center/cover no-repeat fixed;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VK-IT Services</title>
 
-    /* FX layers must NOT block clicks */
-    canvas#fx{position:fixed; inset:0; width:100%; height:100%; z-index:0; pointer-events:none;}
-    .snow{position:fixed; inset:0; z-index:1; pointer-events:none; opacity:0; transition:opacity .6s ease;}
-    .snow.on{opacity:1;}
-    .flake{
-      position:absolute; top:-12vh; width:6px; height:6px; border-radius:50%;
-      background:rgba(255,255,255,.85);
-      filter:drop-shadow(0 0 6px rgba(255,255,255,.25));
-      animation: fall linear infinite;
-    }
-    @keyframes fall{ to{ transform: translateY(120vh) translateX(var(--drift)); } }
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-    .wrap{position:relative; z-index:5; width:min(760px,92vw); margin:0 auto; padding:22px 14px;}
-    .card{
-      background:linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.06));
-      border:1px solid var(--stroke);
-      border-radius:22px;
-      padding:18px 16px;
-      box-shadow: 0 22px 70px rgba(0,0,0,.35);
-      backdrop-filter: blur(10px);
-      text-align:center;
-    }
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:"Segoe UI",system-ui,sans-serif;
+}
 
-    .topline{
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
-      flex-wrap:wrap; margin-bottom:10px;
-    }
-    .brand{font-weight:900; letter-spacing:.6px; text-align:left}
-    .brand span{
-      background:linear-gradient(90deg, var(--gold), var(--cyan), var(--vio), var(--green));
-      -webkit-background-clip:text; background-clip:text; color:transparent;
-    }
-    .pill{
-      display:flex; align-items:center; gap:8px;
-      padding:9px 12px; border-radius:999px;
-      border:1px solid rgba(255,255,255,.18);
-      background:rgba(0,0,0,.24);
-      font-size:13px; color:var(--muted);
-    }
-    .pill b{color:#fff}
+/* VIDEO BACKGROUND */
+.video-bg{
+  position:fixed;
+  top:0; left:0;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  z-index:-2;
+}
+.video-bg video{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
 
-    .gift-area{display:flex; justify-content:center; padding:12px 0 6px;}
-    .gift{
-      position:relative;
-      width:240px; height:210px;
-      cursor:pointer; user-select:none;
-      z-index:10; /* ensure it stays clickable */
-      -webkit-tap-highlight-color: transparent;
-    }
-    .box{
-      position:absolute; left:0; right:0; bottom:0; height:148px;
-      background:linear-gradient(180deg,var(--red1),#c62828);
-      border-radius:16px; box-shadow:0 22px 60px rgba(0,0,0,.35);
-      overflow:hidden;
-    }
-    .box:before{
-      content:""; position:absolute; left:50%; top:0; transform:translateX(-50%);
-      width:36px; height:100%;
-      background:linear-gradient(180deg,#fff176,#ffeb3b); opacity:.95;
-    }
-    .box:after{
-      content:""; position:absolute; left:0; top:58px; width:100%; height:28px;
-      background:linear-gradient(180deg,#fff176,#ffeb3b); opacity:.95;
-    }
-    .lid{
-      position:absolute; left:-7px; right:-7px; bottom:135px; height:58px;
-      background:linear-gradient(180deg,#ff8a80,var(--red2));
-      border-radius:18px; transform-origin:50% 100%;
-      box-shadow:0 14px 26px rgba(0,0,0,.25);
-      transition: transform .85s cubic-bezier(.2,.9,.2,1);
-    }
-    .lid:before{
-      content:""; position:absolute; left:50%; top:0; transform:translateX(-50%);
-      width:38px; height:100%;
-      background:linear-gradient(180deg,#fff176,#ffeb3b);
-    }
-    .bow{
-      position:absolute; left:50%; bottom:170px; transform:translateX(-50%);
-      width:132px; height:74px;
-      transition: transform .85s cubic-bezier(.2,.9,.2,1);
-    }
-    .bow:before,.bow:after{
-      content:""; position:absolute; top:20px; width:60px; height:36px;
-      border:9px solid rgba(255,235,59,.95);
-      border-radius:42px 42px 22px 22px;
-      background:rgba(255,235,59,.24);
-    }
-    .bow:before{left:6px; transform:rotate(-14deg);}
-    .bow:after{right:6px; transform:rotate(14deg);}
-    .knot{
-      position:absolute; left:50%; top:26px; transform:translateX(-50%);
-      width:18px; height:18px; border-radius:6px;
-      background:rgba(255,235,59,.95);
-      box-shadow:0 0 14px rgba(255,235,59,.25);
-    }
+/* DARK OVERLAY */
+.video-bg::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(
+    rgba(5,7,15,.85),
+    rgba(11,18,39,.9)
+  );
+}
 
-    .gift.open .lid{transform: rotateX(78deg) translateY(-18px);}
-    .gift.open .bow{transform: translateX(-50%) translateY(-16px) scale(.96);}
+/* HEADER */
+header{
+  position:fixed;
+  top:0; left:0; right:0;
+  padding:14px 24px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:rgba(0,0,0,.45);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(255,255,255,.1);
+  z-index:999;
+}
+.brand{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  color:#fff;
+  text-decoration:none;
+  font-weight:900;
+}
+.brand i{
+  background:linear-gradient(135deg,#ff4fd8,#b34bff);
+  padding:12px;
+  border-radius:12px;
+}
+nav a{
+  margin-left:18px;
+  color:#fff;
+  text-decoration:none;
+  font-weight:700;
+}
+nav a:hover{color:#ff4fd8}
 
-    .msg{margin-top:10px; opacity:0; transform:translateY(10px); transition:opacity .85s ease, transform .85s ease;}
-    .msg.show{opacity:1; transform:translateY(0);}
-    .msg h1{margin:0; font-size:clamp(28px,4vw,44px); line-height:1.1; text-shadow:0 12px 36px rgba(0,0,0,.35);}
-    .msg .sub{margin:10px 0 0; font-size:clamp(16px,2.3vw,20px); color:rgba(255,255,255,.92);}
-    .msg .by{margin:16px 0 0; font-size:13px; color:rgba(255,255,255,.78); letter-spacing:.7px;}
+/* HERO */
+.hero{
+  min-height:100vh;
+  display:grid;
+  place-items:center;
+  padding:120px 16px 40px;
+  text-align:center;
+  color:#fff;
+}
+.hero h1{
+  font-size:52px;
+  margin-bottom:12px;
+}
+.hero h2{
+  font-size:22px;
+  opacity:.9;
+}
+.hero p{
+  max-width:720px;
+  margin:20px auto;
+  line-height:1.7;
+  opacity:.85;
+}
 
-    .actions{display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:14px;}
-    .btn{
-      border:0; border-radius:14px; padding:12px 14px; min-width:160px;
-      cursor:pointer; font-weight:900; letter-spacing:.3px;
-      background: linear-gradient(90deg, #ffd54a, #fff59d);
-      color:#0b1020;
-      box-shadow:0 16px 40px rgba(255,213,74,.18);
-      transition:transform .15s ease, filter .15s ease;
-    }
-    .btn:hover{transform:translateY(-1px); filter:brightness(1.02);}
-    .btn:active{transform:translateY(1px) scale(.99);}
-    .btn.alt{
-      background: rgba(0,0,0,.25);
-      border:1px solid rgba(255,255,255,.16);
-      color:rgba(255,255,255,.92);
-      box-shadow:none;
-    }
-    .toast{margin-top:12px; font-size:13px; color:rgba(255,255,255,.82); min-height:18px;}
-    .small{font-size:12px; color:rgba(255,255,255,.70); margin-top:8px;}
-    code.badge{padding:2px 8px; border-radius:999px; background:rgba(0,0,0,.28); border:1px solid rgba(255,255,255,.12);}
-  </style>
+/* BUTTONS */
+.btns{
+  margin-top:24px;
+  display:flex;
+  justify-content:center;
+  gap:14px;
+  flex-wrap:wrap;
+}
+.btn{
+  padding:14px 22px;
+  border-radius:14px;
+  text-decoration:none;
+  font-weight:900;
+  border:1px solid rgba(255,255,255,.2);
+  color:#fff;
+  backdrop-filter:blur(8px);
+}
+.btn.primary{
+  background:linear-gradient(135deg,#ff4fd8,#b34bff);
+  color:#0b0712;
+  border:none;
+}
+.btn:hover{transform:translateY(-2px)}
+
+/* SERVICES */
+.section{
+  padding:80px 16px;
+  color:#fff;
+}
+.container{
+  max-width:1100px;
+  margin:auto;
+}
+.section h3{
+  text-align:center;
+  font-size:34px;
+  margin-bottom:10px;
+}
+.section p.sub{
+  text-align:center;
+  opacity:.8;
+  margin-bottom:40px;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:18px;
+}
+.card{
+  background:rgba(18,16,28,.65);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:20px;
+  padding:22px;
+  backdrop-filter:blur(14px);
+  transition:.3s;
+}
+.card:hover{
+  transform:translateY(-8px);
+  box-shadow:0 30px 90px rgba(0,0,0,.5);
+}
+.card i{
+  font-size:24px;
+  color:#ff4fd8;
+  margin-bottom:12px;
+}
+.card h4{
+  margin-bottom:8px;
+}
+.card p{
+  font-size:14px;
+  opacity:.8;
+}
+
+/* FOOTER */
+footer{
+  text-align:center;
+  padding:20px;
+  background:rgba(0,0,0,.45);
+  border-top:1px solid rgba(255,255,255,.1);
+  color:rgba(255,255,255,.7);
+}
+
+/* MOBILE */
+@media(max-width:768px){
+  .hero h1{font-size:38px}
+  nav{display:none}
+}
+</style>
 </head>
 
 <body>
-  <canvas id="fx"></canvas>
-  <div class="snow" id="snow"></div>
 
-  <div class="wrap">
-    <div class="card">
-      <div class="topline">
-        <div class="brand">🎁 <span>Christmas Gift Box</span></div>
-        <div class="pill">Secure: <b id="secureTxt">--</b> | Share API: <b id="shareTxt">--</b></div>
-      </div>
+<!-- VIDEO BACKGROUND -->
+<div class="video-bg">
+  <video autoplay muted loop playsinline>
+    <source src="https://cdn.coverr.co/videos/coverr-working-on-code-4266/1080p.mp4" type="video/mp4">
+  </video>
+</div>
 
-      <div class="gift-area">
-        <div class="gift" id="gift" role="button" tabindex="0" aria-label="Gift box">
-          <div class="lid"></div>
-          <div class="bow"><div class="knot"></div></div>
-          <div class="box"></div>
-        </div>
-      </div>
+<!-- HEADER -->
+<header>
+  <a href="#" class="brand">
+    <i class="fa-solid fa-microchip"></i>
+    VK-IT Services
+  </a>
+  <nav>
+    <a href="#">Home</a>
+    <a href="#">Services</a>
+    <a href="#">Contact</a>
+  </nav>
+</header>
 
-      <div class="msg" id="msg">
-        <h1>Merry Christmas</h1>
-        <div class="sub">and Happy New Year</div>
-        <div class="by">Developed By Vinothkumar -Cyber</div>
-      </div>
-
-      <div class="actions">
-        <button class="btn" id="shareBtn">Share Now</button>
-        <button class="btn alt" id="moreBtn">More Fireworks</button>
-      </div>
-
-      <div class="toast" id="toast"></div>
-      <div class="small">If Share not opens: upload to HTTPS (GitHub Pages) and open on mobile Chrome. <code class="badge" id="urlMode"></code></div>
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <h1>Bring Your Business Online</h1>
+    <h2>Professional IT Solutions</h2>
+    <p>
+      We provide hardware support, networking, cloud solutions,
+      website & app development with full maintenance.
+    </p>
+    <div class="btns">
+      <a href="#contact" class="btn primary">
+        <i class="fa-solid fa-paper-plane"></i> Request Service
+      </a>
+      <a href="#services" class="btn">
+        <i class="fa-solid fa-layer-group"></i> View Services
+      </a>
     </div>
   </div>
+</section>
 
-<script>
-  /* ===== Status badges ===== */
-  const $ = (id)=>document.getElementById(id);
-  const toast = (t)=>{ $("toast").textContent = t || ""; };
+<!-- SERVICES -->
+<section class="section" id="services">
+  <div class="container">
+    <h3>Our Services</h3>
+    <p class="sub">Reliable • Secure • Affordable</p>
 
-  $("secureTxt").textContent = (window.isSecureContext ? "YES" : "NO");
-  $("shareTxt").textContent = (navigator.share ? "YES" : "NO");
-  $("urlMode").textContent = location.protocol; // file: / https: / http:
+    <div class="grid">
+      <div class="card">
+        <i class="fa-solid fa-laptop"></i>
+        <h4>Laptop & Computer Repair</h4>
+        <p>Upgrades, OS install, virus removal, hardware fixing.</p>
+      </div>
 
-  /* ===== Snow (does not block clicks) ===== */
-  const snow = $("snow");
-  function rand(min,max){ return Math.random()*(max-min)+min; }
-  function buildSnow(count=45){
-    snow.innerHTML="";
-    for(let i=0;i<count;i++){
-      const f=document.createElement("div");
-      f.className="flake";
-      const s=rand(3,8);
-      f.style.width=s+"px"; f.style.height=s+"px";
-      f.style.left=rand(0,100)+"vw";
-      f.style.opacity=rand(0.25,0.85).toFixed(2);
-      f.style.setProperty("--drift", rand(-45,45)+"px");
-      const dur=rand(6,13);
-      f.style.animationDuration=dur+"s";
-      f.style.animationDelay=(-Math.random()*dur)+"s";
-      snow.appendChild(f);
-    }
-  }
-  buildSnow();
+      <div class="card">
+        <i class="fa-solid fa-network-wired"></i>
+        <h4>Networking</h4>
+        <p>Wi-Fi setup, LAN, firewall, VPN configuration.</p>
+      </div>
 
-  /* ===== Fireworks Canvas (pointer-events:none so UI works) ===== */
-  const canvas = $("fx");
-  const ctx = canvas.getContext("2d",{alpha:true});
+      <div class="card">
+        <i class="fa-solid fa-code"></i>
+        <h4>Web & App Development</h4>
+        <p>Business websites, e-commerce & mobile apps.</p>
+      </div>
 
-  function resize(){
-    const dpr=Math.max(1, devicePixelRatio||1);
-    canvas.width=Math.floor(innerWidth*dpr);
-    canvas.height=Math.floor(innerHeight*dpr);
-    canvas.style.width=innerWidth+"px";
-    canvas.style.height=innerHeight+"px";
-    ctx.setTransform(dpr,0,0,dpr,0,0);
-  }
-  addEventListener("resize", resize); resize();
+      <div class="card">
+        <i class="fa-solid fa-cloud"></i>
+        <h4>Cloud & Hosting</h4>
+        <p>Domain, hosting, email, backup solutions.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-  let running=false;
-  let rockets=[], parts=[];
-  const palette=["#ff5252","#ffd54a","#69f0ae","#40c4ff","#b388ff","#ffffff"];
-  const pick = a => a[(Math.random()*a.length)|0];
+<footer>
+  © 2025 VK-IT Services • All Rights Reserved
+</footer>
 
-  function startFX(){
-    if(running) return;
-    running=true;
-    ctx.clearRect(0,0,innerWidth,innerHeight);
-    requestAnimationFrame(loop);
-  }
-
-  function launchRocket(x,yTarget){
-    rockets.push({x, y: innerHeight+20, vx: rand(-1.1,1.1), vy: rand(-12.8,-10.2), yTarget, c: pick(palette)});
-  }
-
-  function explode(x,y,c){
-    const count = (rand(80,130))|0;
-    for(let i=0;i<count;i++){
-      const a=Math.random()*Math.PI*2, sp=rand(2.2,7.8);
-      parts.push({x,y, vx:Math.cos(a)*sp, vy:Math.sin(a)*sp, g:0.06, fr:0.985, a:1, fade:rand(0.008,0.016), r:rand(1.0,2.2), c});
-    }
-  }
-
-  function loop(){
-    if(!running) return;
-    ctx.fillStyle="rgba(0,0,0,0.18)";
-    ctx.fillRect(0,0,innerWidth,innerHeight);
-
-    for(let i=rockets.length-1;i>=0;i--){
-      const r=rockets[i];
-      r.x+=r.vx; r.y+=r.vy; r.vy+=0.08;
-      ctx.beginPath(); ctx.fillStyle=r.c; ctx.arc(r.x,r.y,2.2,0,Math.PI*2); ctx.fill();
-      if(r.y<=r.yTarget || r.vy>=-2){ rockets.splice(i,1); explode(r.x,r.y,r.c); }
-    }
-
-    for(let i=parts.length-1;i>=0;i--){
-      const p=parts[i];
-      p.vx*=p.fr; p.vy*=p.fr; p.vy+=p.g;
-      p.x+=p.vx; p.y+=p.vy; p.a-=p.fade;
-      if(p.a<=0){ parts.splice(i,1); continue; }
-      ctx.globalAlpha=Math.max(0,p.a);
-      ctx.beginPath(); ctx.fillStyle=p.c; ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill();
-      ctx.globalAlpha=1;
-    }
-
-    requestAnimationFrame(loop);
-  }
-
-  function burstAt(x,y,n=4){
-    startFX();
-    for(let i=0;i<n;i++) launchRocket(x+rand(-40,40), y+rand(-120,60));
-  }
-
-  /* ===== Gift open (now always clickable) ===== */
-  const gift=$("gift");
-  const msg=$("msg");
-  let opened=false;
-
-  function openGift(){
-    if(opened) return;
-    opened=true;
-    gift.classList.add("open");
-    msg.classList.add("show");
-    snow.classList.add("on");
-
-    for(let i=0;i<6;i++){
-      setTimeout(()=>burstAt(rand(80, innerWidth-80), rand(80, innerHeight*0.55), 3), i*220);
-    }
-    toast("Gift opened. Tap Share Now.");
-  }
-
-  gift.addEventListener("click", ()=> opened ? burstAt(innerWidth/2, innerHeight*0.35, 5) : openGift());
-  gift.addEventListener("keydown",(e)=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); gift.click(); }});
-
-  $("moreBtn").addEventListener("click", ()=>{
-    if(!opened) openGift();
-    burstAt(rand(120, innerWidth-120), rand(80, innerHeight*0.55), 5);
-  });
-
-  /* ===== Share (Web Share API + fallback) =====
-     Web Share requires UI gesture and is available only in secure contexts in some browsers. [MDN]
-  */
-  $("shareBtn").addEventListener("click", async ()=>{
-    if(!opened) openGift();
-
-    const shareData = {
-      title:"Merry Christmas",
-      text:"Merry Christmas & Happy New Year!
-Developed By Vinothkumar -Cyber",
-      url: location.href
-    };
-
-    if(navigator.share && window.isSecureContext){
-      try{
-        await navigator.share(shareData); // resolves or rejects (e.g., cancel). [MDN]
-        toast("Thanks for sharing!");
-        burstAt(innerWidth/2, innerHeight*0.30, 6);
-      }catch(err){
-        toast("Share canceled / blocked.");
-      }
-      return;
-    }
-
-    // fallback: copy link
-    try{
-      await navigator.clipboard.writeText(location.href);
-      toast("Share not available here. Link copied.");
-    }catch{
-      toast("Share not available. Copy: " + location.href);
-    }
-  });
-</script>
 </body>
 </html>
