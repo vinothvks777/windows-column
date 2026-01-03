@@ -1,543 +1,256 @@
+<?php
+// ================= PHP CONTACT =================
+$status = "";
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["email"])) {
+  $name = trim($_POST["name"]);
+  $email = trim($_POST["email"]);
+  $message = trim($_POST["message"]);
+
+  if ($name && $email && $message) {
+    $to = "Vinothvks777@gmail.com";
+    $subject = "New Enquiry - Kowsis Technologies Ltd";
+    $body = "Name: $name\nEmail: $email\n\n$message";
+    $headers = "From: $email";
+
+    if (mail($to, $subject, $body, $headers)) {
+      $status = "Message sent successfully.";
+    } else {
+      $status = "Mail service not available on server.";
+    }
+  }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>VK-IT Service</title>
+<meta charset="UTF-8">
+<title>Kowsis Technologies Ltd</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Kowsis Technologies Ltd provides secure IT services, networking, cloud, development and cyber-focused solutions.">
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/> <!-- [web:65] -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
-:root{
-  --bg:#f6f8ff; --card:#ffffffcc; --text:#0b1220; --muted:#54647f;
-  --a:#2563eb; --b:#22c55e; --c:#a855f7; --d:#f97316; --e:#06b6d4;
-  --line: rgba(15,23,42,.10);
-  --shadow: 0 14px 40px rgba(15,23,42,.10);
-  --r:18px;
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
+body{background:#020617;color:#fff;overflow-x:hidden}
 
-/* Lighter background (faster than heavy conic blur layers) */
-body{
-  color:var(--text);
-  background:
-    radial-gradient(900px 520px at 10% 0%, rgba(37,99,235,.12), transparent 60%),
-    radial-gradient(900px 520px at 90% 0%, rgba(168,85,247,.10), transparent 60%),
-    linear-gradient(180deg, #fff 0%, var(--bg) 60%, #fff 100%);
-  overflow-x:hidden;
-  scroll-behavior:smooth;
-}
+/* ===== MATRIX ===== */
+canvas{position:fixed;inset:0;z-index:-1}
 
-a{color:inherit;text-decoration:none}
-.container{width:min(1120px, 92vw); margin:0 auto}
-.section{padding:88px 0}
-.heading{font-size:34px;text-align:center;margin-bottom:10px}
-.sub{color:var(--muted);text-align:center;max-width:900px;margin:0 auto 34px;line-height:1.75}
-
-/* Header */
+/* ===== HEADER ===== */
 header{
-  position:fixed; left:0; right:0; top:0; z-index:1000;
-  background:rgba(255,255,255,.78);
-  border-bottom:1px solid rgba(15,23,42,.08);
-  backdrop-filter: blur(12px);
+  background:rgba(2,6,23,.85);
+  padding:14px 20px;
+  position:sticky;top:0;z-index:10;
+  border-bottom:1px solid rgba(255,255,255,.08);
 }
-.header-in{
-  height:72px;
-  display:flex; align-items:center; justify-content:space-between; gap:14px;
+.header-wrap{
+  max-width:1100px;margin:auto;
+  display:flex;justify-content:space-between;align-items:center;
 }
-.brand{display:flex;align-items:center;gap:12px}
-.brand-mark{
-  width:44px;height:44px;border-radius:14px;
-  border:1px solid rgba(15,23,42,.10);
-  background: radial-gradient(circle at 30% 30%, rgba(37,99,235,.22), transparent 60%),
-              radial-gradient(circle at 70% 80%, rgba(34,197,94,.18), transparent 60%),
-              rgba(255,255,255,.85);
-  display:grid;place-items:center;
-  box-shadow: var(--shadow);
+.logo{display:flex;gap:10px;align-items:center;font-weight:900}
+.logo-icon{
+  width:36px;height:36px;
+  background:#22c55e;color:#000;
+  border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
 }
-.brand-mark i{color:var(--a)}
-.brand-title{line-height:1.05}
-.brand-title .t{
-  font-weight:1000; letter-spacing:1px; text-transform:uppercase;
-  background:linear-gradient(90deg, var(--a), var(--c), var(--e), var(--d));
-  -webkit-background-clip:text; background-clip:text; color:transparent;
+nav a{
+  color:#cbd5f5;margin-left:14px;
+  text-decoration:none;font-weight:700
 }
-.brand-title small{display:block;margin-top:4px;color:var(--muted);font-weight:800}
-
-.head-icons{display:flex; gap:10px; align-items:center}
-.head-icons .hi{
-  width:36px;height:36px;border-radius:12px;
-  display:grid;place-items:center;
-  border:1px solid rgba(15,23,42,.10);
-  background:rgba(255,255,255,.85);
-  box-shadow: 0 10px 26px rgba(15,23,42,.08);
-}
-.hi.i1{color:var(--a)} .hi.i2{color:var(--b)} .hi.i3{color:var(--c)} .hi.i4{color:var(--d)} .hi.i5{color:var(--e)}
-
-.nav{display:flex;gap:16px;align-items:center}
-.nav a{color:#1f2a44;font-weight:900;opacity:.92;padding:10px 10px;border-radius:12px}
-.nav a:hover{background:rgba(37,99,235,.08);color:var(--a);opacity:1}
-
-.menuBtn{
-  display:none;
-  width:44px;height:44px;border-radius:12px;
-  border:1px solid rgba(15,23,42,.10);
-  background:rgba(255,255,255,.90);
-  cursor:pointer;
+.login-btn{
+  background:#22c55e;color:#000;
+  padding:8px 14px;border-radius:6px;
+  font-weight:800;text-decoration:none;
 }
 
-/* Hero */
-.hero{padding-top:92px}
-.hero-card{
-  border:1px solid rgba(15,23,42,.10);
-  border-radius:26px;
-  overflow:hidden;
-  box-shadow: var(--shadow);
-  background: #fff;
-  display:grid;
-  grid-template-columns: 1.1fr .9fr;
+/* ===== SECTIONS ===== */
+.section{padding:80px 20px}
+.section h2{text-align:center;margin-bottom:10px}
+.sub{text-align:center;color:#94a3b8;margin-bottom:40px}
+
+.hero{padding:90px 20px}
+.hero-box{
+  max-width:1100px;margin:auto;
+  display:grid;grid-template-columns:1fr 1fr;gap:30px
 }
-.hero-left{padding:42px 26px}
-.hero-left h1{font-size:52px; letter-spacing:-1px; line-height:1.05}
-.hero-left h2{margin-top:10px;font-size:22px;color:#223355;font-weight:950}
-.hero-left p{margin-top:14px;color:var(--muted);line-height:1.75;max-width:70ch}
-.badges{margin-top:16px;display:flex;gap:10px;flex-wrap:wrap}
-.badge{
-  padding:9px 12px;border-radius:999px;
-  border:1px solid rgba(15,23,42,.10);
-  background:rgba(255,255,255,.92);
-  color:#1f2a44;font-weight:900;font-size:.92rem;
-  display:inline-flex;align-items:center;gap:8px;
-}
-.cta{margin-top:20px;display:flex;gap:12px;flex-wrap:wrap}
+.hero h1{font-size:36px}
+.hero p{color:#cbd5f5;margin:14px 0}
+
 .btn{
-  padding:14px 16px;border-radius:14px;
-  font-weight:1000;border:1px solid rgba(15,23,42,.12);
-  background:rgba(255,255,255,.95);
-  box-shadow: 0 10px 26px rgba(15,23,42,.08);
-  display:inline-flex;align-items:center;gap:10px;
-  transition:.18s;
-}
-.btn:hover{transform:translateY(-2px)}
-.btn.primary{
-  border:none;color:#fff;
-  background:linear-gradient(135deg, var(--a), var(--c));
-  box-shadow: 0 20px 55px rgba(37,99,235,.18);
-}
-.btn.ghost:hover{border-color:rgba(37,99,235,.30)}
-
-.hero-right{
-  min-height:360px;
-  position:relative;
-  background: #0b1220;
-}
-.hero-right img{
-  width:100%; height:100%;
-  object-fit:cover;
-  display:block;
-}
-.hero-overlay{
-  position:absolute; inset:0;
-  background: linear-gradient(120deg, rgba(0,0,0,.45), rgba(0,0,0,.10));
+  background:#22c55e;color:#000;
+  padding:12px 18px;border-radius:6px;
+  text-decoration:none;font-weight:800
 }
 
-/* Services */
-.grid{
-  display:grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap:18px;
+/* ===== SERVICES ===== */
+.services{
+  max-width:1100px;margin:auto;
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:20px
 }
-.card{
-  background:var(--card);
-  border:1px solid var(--line);
-  border-radius: 20px;
-  box-shadow: var(--shadow);
-  overflow:hidden;
-  transition:.2s;
+.service{
+  background:rgba(2,6,23,.85);
+  padding:20px;border-radius:10px;
+  border:1px solid rgba(255,255,255,.06);
+  text-align:center
 }
-.card:hover{transform:translateY(-6px); box-shadow: 0 24px 70px rgba(15,23,42,.12)}
-.card-body{padding:18px}
-.icon{
-  width:54px;height:54px;border-radius:16px;
-  display:grid;place-items:center;
-  border:1px solid rgba(15,23,42,.10);
-  background:rgba(255,255,255,.95);
-}
-.icon i{font-size:22px}
-.i1{color:var(--a)} .i2{color:var(--b)} .i3{color:var(--c)} .i4{color:var(--d)} .i5{color:var(--e)} .i6{color:#ef4444}
-.card h3{margin-top:12px;font-size:16px}
-.card p{margin-top:8px;color:var(--muted);line-height:1.7;font-size:14px}
-.card img{
-  width:100%; height:140px; object-fit:cover; display:block;
-}
+.service i{font-size:26px;color:#22c55e;margin-bottom:10px}
 
-/* FAQ */
-.faq{max-width:920px;margin:0 auto}
-.acc{
-  border:1px solid rgba(15,23,42,.10);
-  border-radius:18px;
-  overflow:hidden;
-  background:rgba(255,255,255,.88);
-  box-shadow: var(--shadow);
-  margin-bottom:12px;
+/* ===== CONTACT ===== */
+.contact{max-width:600px;margin:auto;text-align:center}
+.contact input,.contact textarea{
+  width:100%;padding:12px;margin-bottom:12px;
+  border:none;border-radius:6px
 }
-.acc button{
-  width:100%;
-  display:flex; align-items:center; justify-content:space-between; gap:12px;
-  padding:16px; border:none; background:transparent;
-  cursor:pointer; font-weight:950; color:#0b1220;
+.contact button{
+  width:100%;padding:12px;
+  background:#22c55e;border:none;font-weight:800
 }
-.acc .left{display:flex;align-items:center;gap:10px;text-align:left}
-.plus{
-  width:34px;height:34px;border-radius:12px;
-  border:1px solid rgba(15,23,42,.10);
-  background:rgba(255,255,255,.95);
-  display:grid;place-items:center;
-  color:var(--a);
-  transition:.18s;
-}
-.acc.open .plus{transform:rotate(45deg)}
-.panel{display:none;padding:0 16px 16px;color:var(--muted);line-height:1.8}
-.acc.open .panel{display:block}
+.status{margin-top:10px;color:#22c55e;font-weight:700}
 
-/* Contact */
-.contact{
-  display:grid; grid-template-columns: 1.05fr .95fr;
-  gap:16px;
-}
-.map, .form{
-  border:1px solid rgba(15,23,42,.10);
-  border-radius:20px;
-  background:rgba(255,255,255,.88);
-  box-shadow: var(--shadow);
-  overflow:hidden;
-}
-.map{min-height:360px}
-.map iframe{width:100%;height:100%;border:0}
-.form{padding:18px}
-.form input,.form textarea,.form select{
-  width:100%;
-  padding:12px;border-radius:14px;
-  border:1px solid rgba(15,23,42,.12);
-  background:#fff;
-  outline:none;
-  margin-bottom:12px;
-}
-.form textarea{min-height:120px;resize:vertical}
-.form .submit{
-  width:100%; border:none; border-radius:14px;
-  padding:12px; font-weight:1000; color:#fff;
-  background:linear-gradient(135deg, var(--a), var(--c));
-  cursor:pointer;
-}
-.status{margin-top:10px;min-height:20px;font-weight:900;color:#0b1220}
-
-/* Footer + Top */
+/* ===== FOOTER ===== */
 footer{
-  padding:22px 0;
-  text-align:center;
-  border-top:1px solid rgba(15,23,42,.08);
-  background:rgba(255,255,255,.78);
-  color:var(--muted);
+  text-align:center;padding:14px;
+  background:#020617;color:#94a3b8;
+  border-top:1px solid rgba(255,255,255,.06)
 }
-.top{
-  position:fixed; right:18px; bottom:18px;
-  width:46px;height:46px;border-radius:50%;
-  display:grid;place-items:center;
-  background:rgba(255,255,255,.92);
-  border:1px solid rgba(15,23,42,.10);
-  box-shadow: var(--shadow);
-  opacity:0; pointer-events:none; transition:.18s;
-}
-.top.show{opacity:1; pointer-events:auto}
-.top:hover{transform:translateY(-2px)}
 
-@media (max-width: 940px){
-  .hero-card{grid-template-columns:1fr}
-  .hero-right{min-height:260px}
-  .contact{grid-template-columns:1fr}
-  .head-icons{display:none}
-  .menuBtn{display:inline-grid;place-items:center}
-  .nav{
-    position:fixed; top:76px; right:16px;
-    width:min(260px, 92vw);
-    background:rgba(255,255,255,.92);
-    border:1px solid rgba(15,23,42,.10);
-    border-radius:16px;
-    padding:12px;
-    flex-direction:column;
-    gap:10px;
-    opacity:0; pointer-events:none;
-    transform:translateY(-10px);
-    transition:.18s;
-    box-shadow: var(--shadow);
-  }
-  .nav.open{opacity:1; pointer-events:auto; transform:translateY(0)}
-  .hero-left h1{font-size:40px}
+/* ===== WHATSAPP ===== */
+.whatsapp{
+  position:fixed;bottom:20px;right:20px;
+  width:52px;height:52px;background:#25d366;
+  border-radius:50%;display:flex;
+  align-items:center;justify-content:center;
+  color:#fff;font-size:26px;text-decoration:none
+}
+
+@media(max-width:768px){
+  .hero-box{grid-template-columns:1fr;text-align:center}
+  nav{display:none}
 }
 </style>
 </head>
 
 <body>
+
+<canvas id="matrix"></canvas>
+
 <header>
-  <div class="container header-in">
-    <a class="brand" href="#home">
-      <div class="brand-mark"><i class="fa-solid fa-microchip"></i></div>
-      <div class="brand-title">
-        <div class="t">VK-IT Service</div>
-        <small>Hardware • Software • Cloud • Support</small>
-      </div>
-    </a>
-
-    <div class="head-icons" aria-label="Header quick icons">
-      <div class="hi i1" title="IT Support"><i class="fa-solid fa-headset"></i></div>
-      <div class="hi i2" title="Networking"><i class="fa-solid fa-network-wired"></i></div>
-      <div class="hi i3" title="Security"><i class="fa-solid fa-shield-halved"></i></div>
-      <div class="hi i4" title="Development"><i class="fa-solid fa-code"></i></div>
-      <div class="hi i5" title="Cloud"><i class="fa-solid fa-cloud"></i></div>
+  <div class="header-wrap">
+    <div class="logo">
+      <div class="logo-icon">K</div>
+      <div>Kowsis Technologies Ltd<br><small style="color:#cbd5f5">Cyber IT Services</small></div>
     </div>
-
-    <button class="menuBtn" id="menuBtn" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
-    <nav class="nav" id="nav">
+    <nav>
       <a href="#home">Home</a>
       <a href="#services">Services</a>
-      <a href="#faq">FAQ</a>
       <a href="#contact">Contact</a>
+      <a href="https://accounts.google.com" class="login-btn">
+        <i class="fa-brands fa-google"></i> Login
+      </a>
     </nav>
   </div>
 </header>
 
-<main id="home" class="hero">
-  <div class="container">
-    <section class="hero-card">
-      <div class="hero-left">
-        <h1>Fast & Reliable IT Services</h1>
-        <h2>for Home and Business</h2>
-        <p>VK‑IT Service provides quick onsite/remote support, networking, security, cloud setup, and website/app development with ongoing maintenance.</p>
-
-        <div class="badges">
-          <span class="badge"><i class="fa-solid fa-bolt"></i> Fast response</span>
-          <span class="badge"><i class="fa-solid fa-shield"></i> Secure setup</span>
-          <span class="badge"><i class="fa-solid fa-screwdriver-wrench"></i> Expert support</span>
-        </div>
-
-        <div class="cta">
-          <a class="btn primary" href="#contact"><i class="fa-solid fa-paper-plane"></i> Request Service</a>
-          <a class="btn" href="#services"><i class="fa-solid fa-layer-group"></i> View Services</a>
-        </div>
-      </div>
-
-      <!-- Optimized online image: specify width + quality for speed. [web:46] -->
-      <div class="hero-right">
-        <img
-          src="https://images.unsplash.com/photo-1526378722484-bd91ca387e72?auto=format&fit=crop&w=1200&q=70"
-          alt="IT service and technology"
-          loading="eager"
-          decoding="async"
-          fetchpriority="high">
-        <div class="hero-overlay"></div>
-      </div>
-    </section>
-  </div>
-</main>
-
-<section class="section" id="services">
-  <div class="container">
-    <h2 class="heading">Our Services</h2>
-    <p class="sub">More images + lighter UI for faster load while keeping a premium look.</p>
-
-    <div class="grid">
-      <article class="card">
-        <img src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=1200&q=70" alt="Laptop repair" loading="lazy" decoding="async"> <!-- [web:46] -->
-        <div class="card-body">
-          <div class="icon"><i class="fa-solid fa-laptop i1"></i></div>
-          <h3>Computer & Laptop Repair</h3>
-          <p>OS issues, upgrades, SSD/RAM, cleanup, performance tuning, and troubleshooting.</p>
-        </div>
-      </article>
-
-      <article class="card">
-        <img src="https://images.unsplash.com/photo-1551703599-6b3e8379aa8f?auto=format&fit=crop&w=1200&q=70" alt="Networking setup" loading="lazy" decoding="async"> <!-- [web:46] -->
-        <div class="card-body">
-          <div class="icon"><i class="fa-solid fa-network-wired i2"></i></div>
-          <h3>Networking Solutions</h3>
-          <p>Wi‑Fi planning, LAN setup, firewall rules, VPN, and office connectivity improvement.</p>
-        </div>
-      </article>
-
-      <article class="card">
-        <img src="https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=1200&q=70" alt="Security camera" loading="lazy" decoding="async"> <!-- [web:46] -->
-        <div class="card-body">
-          <div class="icon"><i class="fa-solid fa-shield-halved i3"></i></div>
-          <h3>CCTV & Security</h3>
-          <p>CCTV installation, monitoring, biometrics, and security best-practices.</p>
-        </div>
-      </article>
-
-      <article class="card">
-        <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=70" alt="Web development" loading="lazy" decoding="async"> <!-- [web:46] -->
-        <div class="card-body">
-          <div class="icon"><i class="fa-solid fa-code i4"></i></div>
-          <h3>Web & App Development</h3>
-          <p>Business websites, dashboards, ecommerce, and mobile apps with maintenance.</p>
-        </div>
-      </article>
-
-      <article class="card">
-        <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=1200&q=70" alt="Marketing analytics" loading="lazy" decoding="async"> <!-- [web:46] -->
-        <div class="card-body">
-          <div class="icon"><i class="fa-solid fa-chart-line i5"></i></div>
-          <h3>Digital Marketing</h3>
-          <p>SEO, ads, content planning, and growth tracking for business leads.</p>
-        </div>
-      </article>
-
-      <article class="card">
-        <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=70" alt="Cloud infrastructure" loading="lazy" decoding="async"> <!-- [web:46] -->
-        <div class="card-body">
-          <div class="icon"><i class="fa-solid fa-cloud i6"></i></div>
-          <h3>Domain & Hosting</h3>
-          <p>Domains, DNS, hosting, SSL, and corporate email setup/support.</p>
-        </div>
-      </article>
+<section class="hero" id="home">
+  <div class="hero-box">
+    <div>
+      <h1>Secure & Smart IT Solutions</h1>
+      <p>Cyber-focused IT support, networking, cloud and development services.</p>
+      <a href="#contact" class="btn">Request Service</a>
     </div>
   </div>
 </section>
 
-<section class="section" id="faq">
-  <div class="container">
-    <h2 class="heading">FAQ</h2>
-    <p class="sub">Tap to expand.</p>
+<section class="section">
+  <h2>Why Choose Us</h2>
+  <p class="sub">Reliable • Secure • Business-ready</p>
+  <div class="services">
+    <div class="service"><i class="fa-solid fa-shield"></i><h3>Security First</h3></div>
+    <div class="service"><i class="fa-solid fa-clock"></i><h3>Fast Response</h3></div>
+    <div class="service"><i class="fa-solid fa-gear"></i><h3>Clear Process</h3></div>
+    <div class="service"><i class="fa-solid fa-building"></i><h3>Enterprise Ready</h3></div>
+  </div>
+</section>
 
-    <div class="faq">
-      <div class="acc open" data-acc>
-        <button type="button" data-acc-btn aria-expanded="true">
-          <span class="left"><span class="plus">+</span> How much will it cost?</span>
-          <i class="fa-solid fa-chevron-down"></i>
-        </button>
-        <div class="panel">Share the requirement (repair/network/web/app). A quick estimate will be provided.</div>
-      </div>
-
-      <div class="acc" data-acc>
-        <button type="button" data-acc-btn aria-expanded="false">
-          <span class="left"><span class="plus">+</span> How long will it take?</span>
-          <i class="fa-solid fa-chevron-down"></i>
-        </button>
-        <div class="panel">Support can be same day; projects depend on scope, pages, and content readiness.</div>
-      </div>
-
-      <div class="acc" data-acc>
-        <button type="button" data-acc-btn aria-expanded="false">
-          <span class="left"><span class="plus">+</span> Do you provide AMC?</span>
-          <i class="fa-solid fa-chevron-down"></i>
-        </button>
-        <div class="panel">Yes, AMC available for monthly/quarterly maintenance and priority support.</div>
-      </div>
-    </div>
+<section class="section" id="services">
+  <h2>Our Services</h2>
+  <p class="sub">Complete IT solutions</p>
+  <div class="services">
+    <div class="service"><i class="fa-solid fa-screwdriver-wrench"></i>IT Support & AMC</div>
+    <div class="service"><i class="fa-solid fa-network-wired"></i>Networking</div>
+    <div class="service"><i class="fa-solid fa-shield-halved"></i>CCTV & Security</div>
+    <div class="service"><i class="fa-solid fa-code"></i>Web Development</div>
+    <div class="service"><i class="fa-solid fa-cloud"></i>Cloud Services</div>
+    <div class="service"><i class="fa-solid fa-desktop"></i>OS Support</div>
   </div>
 </section>
 
 <section class="section" id="contact">
-  <div class="container">
-    <h2 class="heading">Get in Touch</h2>
-    <p class="sub">Form submits to Google Apps Script Web App. Map loads lazily.</p>
+  <h2>Contact Us</h2>
+  <div class="contact">
+    <p><i class="fa-solid fa-phone"></i> +91 90474 00147</p>
+    <p><i class="fa-solid fa-envelope"></i> Vinothvks777@gmail.com</p>
 
-    <div class="contact">
-      <div class="map">
-        <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d30711243.17762776!2d64.4398422293091!3d20.011408266548177!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30635ff06b92b791%3A0xd78c4fa1854213a6!2sIndia!5e0!3m2!1sen!2sin!4v1644684739958!5m2!1sen!2sin"
-          loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"></iframe> <!-- [web:44] -->
-      </div>
-
-      <div class="form">
-        <form id="contactForm" method="POST">
-          <input type="text" name="name" placeholder="Name" required>
-          <input type="tel" name="phone" placeholder="Contact number" pattern="[0-9]{10}" maxlength="10" required>
-          <input type="email" name="email" placeholder="Email" required>
-
-          <select name="service" required>
-            <option value="">Select Service</option>
-            <option>Computer & Laptop Repair</option>
-            <option>Networking (Wi‑Fi / LAN / Firewall / VPN)</option>
-            <option>CCTV / Biometric / Security</option>
-            <option>Website Development</option>
-            <option>Mobile App Development</option>
-            <option>Digital Marketing (SEO/PPC/SMM)</option>
-            <option>Domain/Hosting/Corporate Email</option>
-            <option>Windows / Linux / Android / MS Office</option>
-          </select>
-
-          <textarea name="message" placeholder="Your Message" required></textarea>
-
-          <button class="submit" id="submitBtn" type="submit">
-            <span id="btnText">Submit</span>
-          </button>
-          <div class="status" id="status"></div>
-        </form>
-      </div>
-    </div>
+    <form method="POST" onsubmit="sendWhatsApp(event)">
+      <input id="name" name="name" placeholder="Your Name" required>
+      <input id="email" name="email" type="email" placeholder="Email" required>
+      <textarea id="message" name="message" placeholder="Your Requirement" required></textarea>
+      <button type="submit">Send</button>
+      <div class="status"><?= $status ?></div>
+    </form>
   </div>
 </section>
 
-<footer>© 2025 VK‑IT Service • All Rights Reserved</footer>
-<a class="top" id="top" href="#home" aria-label="Back to top"><i class="fa-solid fa-arrow-up"></i></a>
+<footer>© 2025 Kowsis Technologies Ltd • All Rights Reserved</footer>
+
+<a href="https://wa.me/919047400147" class="whatsapp" target="_blank">
+  <i class="fab fa-whatsapp"></i>
+</a>
 
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx6-Tq6S8z13cQv-jkXe6dj_3CrSQ138wcc4oSFzUPesstSmmztzc4T2vD4YLAHhmPBig/exec";
+/* ===== MATRIX ANIMATION (SLOW & READABLE) ===== */
+const canvas = document.getElementById("matrix");
+const ctx = canvas.getContext("2d");
+canvas.width = innerWidth;
+canvas.height = innerHeight;
 
-const menuBtn = document.getElementById("menuBtn");
-const nav = document.getElementById("nav");
-menuBtn.addEventListener("click", ()=> nav.classList.toggle("open"));
-nav.querySelectorAll("a").forEach(a=> a.addEventListener("click", ()=> nav.classList.remove("open")));
+const letters = "01";
+const fontSize = 18;
+const columns = canvas.width / fontSize;
+const drops = Array.from({length:columns}).fill(1);
 
-/* FAQ */
-document.querySelectorAll("[data-acc-btn]").forEach(btn=>{
-  btn.addEventListener("click", ()=>{
-    const box = btn.closest("[data-acc]");
-    const willOpen = !box.classList.contains("open");
-    document.querySelectorAll("[data-acc]").forEach(a=>{
-      a.classList.remove("open");
-      const b = a.querySelector("[data-acc-btn]");
-      if(b) b.setAttribute("aria-expanded","false");
-    });
-    box.classList.toggle("open", willOpen);
-    btn.setAttribute("aria-expanded", willOpen ? "true" : "false");
+function draw(){
+  ctx.fillStyle = "rgba(2,6,23,0.1)";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle = "#22c55e";
+  ctx.font = fontSize + "px monospace";
+
+  drops.forEach((y,i)=>{
+    ctx.fillText(letters[Math.random()>0.5?0:1], i*fontSize, y*fontSize);
+    if(y*fontSize > canvas.height && Math.random() > 0.97) drops[i]=0;
+    drops[i]++;
   });
-});
+}
+setInterval(draw, 70);
 
-/* Back to top */
-const topBtn = document.getElementById("top");
-window.addEventListener("scroll", ()=> topBtn.classList.toggle("show", window.scrollY > 700));
+window.onresize=()=>{
+  canvas.width=innerWidth;
+  canvas.height=innerHeight;
+};
 
-/* Form submit */
-const form = document.getElementById("contactForm");
-const statusEl = document.getElementById("status");
-const submitBtn = document.getElementById("submitBtn");
-const btnText = document.getElementById("btnText");
-form.action = SCRIPT_URL;
-
-form.addEventListener("submit", async (e)=>{
-  e.preventDefault();
-  statusEl.textContent = "";
-  submitBtn.disabled = true;
-  btnText.textContent = "Sending...";
-  try{
-    const fd = new FormData(form);
-    const res = await fetch(SCRIPT_URL, { method:"POST", body:new URLSearchParams(fd) });
-    statusEl.textContent = res.ok
-      ? "Submitted successfully. We will contact you soon."
-      : "Submitted, but server response not OK. Try again.";
-    if(res.ok) form.reset();
-  }catch(err){
-    statusEl.textContent = "Network blocked fetch. Submitting using normal form...";
-    form.submit();
-    return;
-  }finally{
-    submitBtn.disabled = false;
-    btnText.textContent = "Submit";
-  }
-});
+/* ===== WHATSAPP AUTO MESSAGE ===== */
+function sendWhatsApp(e){
+  const text =
+    "Hello Kowsis Technologies Ltd,%0A%0A"+
+    "Name: "+name.value+"%0A"+
+    "Email: "+email.value+"%0A%0A"+
+    message.value;
+  window.open("https://wa.me/919047400147?text="+text,"_blank");
+}
 </script>
+
 </body>
 </html>
